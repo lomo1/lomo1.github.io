@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lomo.space/2018/12/10/k8s-config/</loc>
+    
+    <lastmod>2019-12-07T15:02:40.093Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2018/12/07/k8s-virtual-machine/</loc>
+    
+    <lastmod>2019-12-07T14:30:58.745Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lomo.space/2017/09/07/wda-usage-docs/</loc>
     
     <lastmod>2019-12-05T12:12:52.233Z</lastmod>
@@ -30,13 +44,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/categories/essay/index.html</loc>
-    
-    <lastmod>2019-09-07T16:51:00.776Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/categories/essay/2017-02-23-suibi2.html</loc>
     
     <lastmod>2019-09-07T16:51:00.776Z</lastmod>
@@ -58,9 +65,9 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/12/06/vertival-align%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/</loc>
+    <loc>http://lomo.space/categories/essay/index.html</loc>
     
-    <lastmod>2019-09-07T16:51:00.775Z</lastmod>
+    <lastmod>2019-09-07T16:51:00.776Z</lastmod>
     
   </url>
   
@@ -68,6 +75,20 @@
     <loc>http://lomo.space/2015/04/28/%E4%B8%8B%E8%BD%BD%E6%97%A0%E6%B0%B4%E5%8D%B0Bing%E6%AF%8F%E6%97%A5%E7%BE%8E%E5%9B%BE/</loc>
     
     <lastmod>2019-09-07T16:51:00.775Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2016/12/06/vertival-align%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.775Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2017/03/02/use-tree-command-list-project-contents/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.774Z</lastmod>
     
   </url>
   
@@ -86,21 +107,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/03/02/use-tree-command-list-project-contents/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.774Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lomo.space/2018/10/10/stored-procedure/</loc>
+    <loc>http://lomo.space/2016/10/02/sublime-3-on-mac/</loc>
     
     <lastmod>2019-09-07T16:51:00.773Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/10/02/sublime-3-on-mac/</loc>
+    <loc>http://lomo.space/2018/10/10/stored-procedure/</loc>
     
     <lastmod>2019-09-07T16:51:00.773Z</lastmod>
     
@@ -121,20 +135,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/09/30/read-book-of-javascript-promise/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.772Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lomo.space/2016/02/22/reading-list-in-2015/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.772Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/2015/02/21/reading-list-in-2014/</loc>
     
     <lastmod>2019-09-07T16:51:00.772Z</lastmod>
@@ -149,9 +149,16 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2018/09/01/react-antd-notes/</loc>
+    <loc>http://lomo.space/2016/09/30/read-book-of-javascript-promise/</loc>
     
-    <lastmod>2019-09-07T16:51:00.771Z</lastmod>
+    <lastmod>2019-09-07T16:51:00.772Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2016/02/22/reading-list-in-2015/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.772Z</lastmod>
     
   </url>
   
@@ -170,6 +177,13 @@
   </url>
   
   <url>
+    <loc>http://lomo.space/2018/09/01/react-antd-notes/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.771Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lomo.space/2018/11/10/python-pdb/</loc>
     
     <lastmod>2019-09-07T16:51:00.771Z</lastmod>
@@ -177,14 +191,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2018/02/24/observable/</loc>
+    <loc>http://lomo.space/2017/08/18/nodejs%E9%93%BE%E6%8E%A5ldap/</loc>
     
     <lastmod>2019-09-07T16:51:00.770Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/08/18/nodejs%E9%93%BE%E6%8E%A5ldap/</loc>
+    <loc>http://lomo.space/2018/02/24/observable/</loc>
     
     <lastmod>2019-09-07T16:51:00.770Z</lastmod>
     
@@ -205,13 +219,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/08/03/mysql-char-varchar/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.769Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/2017/05/17/messy-code-in-MySQL-on-Linux-by-chinese/</loc>
     
     <lastmod>2019-09-07T16:51:00.769Z</lastmod>
@@ -219,14 +226,21 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2018/03/17/minikube-study/</loc>
+    <loc>http://lomo.space/2013/03/05/love/</loc>
     
     <lastmod>2019-09-07T16:51:00.769Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2013/03/05/love/</loc>
+    <loc>http://lomo.space/2016/08/03/mysql-char-varchar/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.769Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2018/03/17/minikube-study/</loc>
     
     <lastmod>2019-09-07T16:51:00.769Z</lastmod>
     
@@ -261,20 +275,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/05/26/js-operate-date/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.767Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lomo.space/2016/10/30/js-operate-cookie/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.767Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/2016/03/30/js-count-length/</loc>
     
     <lastmod>2019-09-07T16:51:00.767Z</lastmod>
@@ -282,7 +282,21 @@
   </url>
   
   <url>
+    <loc>http://lomo.space/2016/05/26/js-operate-date/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.767Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lomo.space/2016/07/23/js-map/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.767Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2016/10/30/js-operate-cookie/</loc>
     
     <lastmod>2019-09-07T16:51:00.767Z</lastmod>
     
@@ -303,14 +317,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/01/21/java-serialize-yaml-file/</loc>
+    <loc>http://lomo.space/2016/04/08/jquery-get-one-col-from-table/</loc>
     
     <lastmod>2019-09-07T16:51:00.766Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/04/08/jquery-get-one-col-from-table/</loc>
+    <loc>http://lomo.space/2017/01/21/java-serialize-yaml-file/</loc>
     
     <lastmod>2019-09-07T16:51:00.766Z</lastmod>
     
@@ -338,14 +352,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/05/23/install-Brew-tools-on-Mac/</loc>
+    <loc>http://lomo.space/2015/06/21/howToCreateBlogByUsingGitHubPages/</loc>
     
     <lastmod>2019-09-07T16:51:00.764Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2015/06/21/howToCreateBlogByUsingGitHubPages/</loc>
+    <loc>http://lomo.space/2016/05/23/install-Brew-tools-on-Mac/</loc>
     
     <lastmod>2019-09-07T16:51:00.764Z</lastmod>
     
@@ -359,13 +373,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/04/02/gulp-compress-html-css-js/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.760Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/2017/06/18/highcharts-plotOptions-issue/</loc>
     
     <lastmod>2019-09-07T16:51:00.760Z</lastmod>
@@ -374,6 +381,13 @@
   
   <url>
     <loc>http://lomo.space/2017/08/15/gogs-support-ldap/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.760Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2017/04/02/gulp-compress-html-css-js/</loc>
     
     <lastmod>2019-09-07T16:51:00.760Z</lastmod>
     
@@ -408,14 +422,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/06/17/general-git-command/</loc>
+    <loc>http://lomo.space/2015/07/09/create-table-dynamic/</loc>
     
     <lastmod>2019-09-07T16:51:00.758Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lomo.space/2015/07/09/create-table-dynamic/</loc>
+    <loc>http://lomo.space/2016/06/17/general-git-command/</loc>
     
     <lastmod>2019-09-07T16:51:00.758Z</lastmod>
     
@@ -436,7 +450,7 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/12/21/centos-install-ftp/</loc>
+    <loc>http://lomo.space/2016/09/21/centos-install-LAMP-develop-env/</loc>
     
     <lastmod>2019-09-07T16:51:00.757Z</lastmod>
     
@@ -450,16 +464,9 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/09/21/centos-install-LAMP-develop-env/</loc>
+    <loc>http://lomo.space/2016/12/21/centos-install-ftp/</loc>
     
     <lastmod>2019-09-07T16:51:00.757Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lomo.space/2016/03/10/build-git-repository-by-gogs/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.756Z</lastmod>
     
   </url>
   
@@ -478,7 +485,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/12/21/angular-study-note/</loc>
+    <loc>http://lomo.space/2016/03/10/build-git-repository-by-gogs/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.756Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2016/10/19/angularjs-img/</loc>
     
     <lastmod>2019-09-07T16:51:00.755Z</lastmod>
     
@@ -492,7 +506,7 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/10/19/angularjs-img/</loc>
+    <loc>http://lomo.space/2016/12/21/angular-study-note/</loc>
     
     <lastmod>2019-09-07T16:51:00.755Z</lastmod>
     
@@ -520,7 +534,14 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/10/13/Nginx-Reverse-Proxy/</loc>
+    <loc>http://lomo.space/2017/05/10/WebDriver-maxsize-Chrome-window/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.753Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2017/03/04/Nginx-Apache-DiscuzX/</loc>
     
     <lastmod>2019-09-07T16:51:00.753Z</lastmod>
     
@@ -541,14 +562,7 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/03/04/Nginx-Apache-DiscuzX/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.753Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lomo.space/2017/05/10/WebDriver-maxsize-Chrome-window/</loc>
+    <loc>http://lomo.space/2016/10/13/Nginx-Reverse-Proxy/</loc>
     
     <lastmod>2019-09-07T16:51:00.753Z</lastmod>
     
@@ -562,13 +576,6 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2016/03/31/Lomo/</loc>
-    
-    <lastmod>2019-09-07T16:51:00.752Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lomo.space/2014/05/07/MS-Bing-CodeFlow/</loc>
     
     <lastmod>2019-09-07T16:51:00.752Z</lastmod>
@@ -576,7 +583,7 @@
   </url>
   
   <url>
-    <loc>http://lomo.space/2017/09/15/JavaScript%E4%B9%8BsetTimeout/</loc>
+    <loc>http://lomo.space/2016/03/31/Lomo/</loc>
     
     <lastmod>2019-09-07T16:51:00.752Z</lastmod>
     
@@ -584,6 +591,13 @@
   
   <url>
     <loc>http://lomo.space/2014/06/13/Linux-and-BSD-difference/</loc>
+    
+    <lastmod>2019-09-07T16:51:00.752Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lomo.space/2017/09/15/JavaScript%E4%B9%8BsetTimeout/</loc>
     
     <lastmod>2019-09-07T16:51:00.752Z</lastmod>
     
