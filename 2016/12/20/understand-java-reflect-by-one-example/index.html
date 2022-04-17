@@ -1,0 +1,863 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>understand java reflect by one example | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="一个例子简析Java里的反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="understand java reflect by one example">
+<meta property="og:url" content="http://lomo.space/2016/12/20/understand-java-reflect-by-one-example/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="一个例子简析Java里的反射">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-12-20T15:16:46.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.887Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="reflect">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/20/understand-java-reflect-by-one-example/" title="understand java reflect by one example" itemprop="url">understand java reflect by one example</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-20T15:16:46.000Z" itemprop="datePublished"> Published 2016-12-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E6%9E%90Java%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">简析Java反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80-%E7%B1%BB%E5%9E%8B%E7%B1%BB-%E5%85%B3%E4%BA%8EgetClass-x2F-class"><span class="toc-number">1.1.</span> <span class="toc-text">前言-类型类(关于getClass&#x2F;.class)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="简析Java反射"><a href="#简析Java反射" class="headerlink" title="简析Java反射"></a>简析Java反射</h2><blockquote>
+<p>通过一个简单的实例，来理解Java反射。</p>
+</blockquote>
+<h3 id="前言-类型类-关于getClass-x2F-class"><a href="#前言-类型类-关于getClass-x2F-class" class="headerlink" title="前言-类型类(关于getClass&#x2F;.class)"></a>前言-类型类(关于getClass&#x2F;.class)</h3><p>在Java中，一切都是对象，就像JavaScript一样，一切都是对象。所以我们所使用的对象都直接、或间接地继承自Object类。</p>
+<p>Object类中包含一个名为<code>getClass</code>的方法，利用这个方法可以获得一个实例(对象)的类型类。</p>
+<p><strong>类型类</strong>：就是指 代表一个类型的类，一切皆是对象，所以类型也是对象、不例外，Java中使用这种称为类型类的东东来表示一个类型。</p>
+<p>而<strong>所有的类型类都是Class类的实例</strong>! 可看后面实例部分里的<code>Demo2</code></p>
+<p>e.g.1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设A类已声明</span></span><br><span class="line"><span class="type">A</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">A</span>();</span><br><span class="line"><span class="keyword">if</span>(a.getClass() == A.class) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;OK!&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Not OK !&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出：OK!</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分析，对象a是类A的一个实例，A是一个已声明的类，使用<code>.getClass()</code> 返回的正是A的 类型类，Java中表示一个特定类型的 类型类 可以使用<code>类型.class</code>方式获得<br>a.getClass()返回的是A的类型类也就是A.class， 所以输出上述结果。</p>
+</blockquote>
+<p>查看<code>.getClass()</code>方法源码，看到如下，调用的是一个native方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> Class&lt;?&gt; getClass();</span><br></pre></td></tr></table></figure>
+
+<p>再假设，如果A类是B类的子类，又有如下示例2</p>
+<p>e.g.2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">A</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">A</span>();</span><br><span class="line"><span class="keyword">if</span>(a.getClass == B.class)&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;OK!&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;NOT OK!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出：NOT OK!</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分析可知，<strong>类型类</strong> 是一一对应的，父类的类型类和继承自父类的子类的类型类是不同的！！！</p>
+</blockquote>
+<p>如果知道一个实例对象，那么可以通过.getClass来获得该对象的类型类，如果知道一个类型，那么就可以使用.class来获得该类型的类型类。</p>
+<p>获取 类型类 后，可以调用其中的一些方法获得类型的信息。如：</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法名</th>
+<th align="center">返回类型</th>
+<th align="right">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">getName()</td>
+<td align="center">String</td>
+<td align="right">获得该类型的全名称</td>
+</tr>
+<tr>
+<td align="left">getSuperClass()</td>
+<td align="center">Class</td>
+<td align="right">获得该类型的直接父类，如没有则返回null</td>
+</tr>
+<tr>
+<td align="left">getInterfaces()</td>
+<td align="center">Class[]</td>
+<td align="right">获得该类型实现的所有接口</td>
+</tr>
+<tr>
+<td align="left">isArray</td>
+<td align="center">boolean</td>
+<td align="right">判断是否为数组</td>
+</tr>
+<tr>
+<td align="left">isEnum()</td>
+<td align="center">boolean</td>
+<td align="right">判断类型是否为枚举类型</td>
+</tr>
+<tr>
+<td align="left">isInterface()</td>
+<td align="center">boolean</td>
+<td align="right">判断是否为接口</td>
+</tr>
+<tr>
+<td align="left">isPrimitive()</td>
+<td align="center">boolean</td>
+<td align="right">判断该类型是否是基本类型 -&gt; int, boolean, double，float类</td>
+</tr>
+<tr>
+<td align="left">isAssignableFrom(Class cls)</td>
+<td align="center">boolean</td>
+<td align="right">判断这个类型是否是福类型cls的父类或父接口</td>
+</tr>
+<tr>
+<td align="left">getComponentType()</td>
+<td align="center">Class</td>
+<td align="right">如果该类型是一个数组，那么返回该数组的组件类型</td>
+</tr>
+<tr>
+<td align="left">asSubclass(Class cla)</td>
+<td align="center">Class</td>
+<td align="right">?</td>
+</tr>
+</tbody></table>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>Java反射机制: 简言之，就是能够动态获取信息、以及能否动态调用对象的方法。</p>
+<blockquote>
+<p>传统的编程要求程序必须在编译阶段决定使用的类型，如C。</p>
+</blockquote>
+<p>它是在程序运行状态中，对于任意一个类，都能知道这个类的所有属性和方法；对于任意一个对象，都能调用它的任意一个方法；</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>① 接口类<code>ActionInterface</code></p>
+<blockquote>
+<p>接口类定义了一个动作方法，具体实现由继承实现该接口类的子类去实现。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">ActionInterface</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">walk</span><span class="params">(<span class="type">int</span> m)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>② <code>Person</code>类 – 父类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Person类包含2个构造器，一个无参构造器，一个含参构造器</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span>  <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//无参构造器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//含参构造器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(<span class="type">int</span> age, String name)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 提供对外访问Person类中私有变量 age、name属性的方法 */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>③ <code>SuperMan</code>类  –  子类</p>
+<blockquote>
+<p>SuperMan了继承自Person类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SuperMan子类继承自Person类 同时实现接口ActionInterface</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SuperMan</span> <span class="keyword">extends</span> <span class="title class_">Person</span> <span class="keyword">implements</span> <span class="title class_">ActionInterface</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> BlueBriefs;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fly</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;超人会飞耶～～&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBlueBriefs</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> BlueBriefs;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBlueBriefs</span><span class="params">(<span class="type">boolean</span> blueBriefs)</span> &#123;</span><br><span class="line">        BlueBriefs = blueBriefs;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">walk</span><span class="params">(<span class="type">int</span> m)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;超人会走耶～～走了&quot;</span> + m + <span class="string">&quot;米就走不动了！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>简单分析下，SuperMan属于子类，其继承自Person类，Person类中显式地声明了无参构造器和含参构造器，当创建子类对象时，对构造器的一些初始化调用(关于构造器可查看: <a href="http://lomo.space/2016/04/14/Java-Constructor/">http://lomo.space/2016/04/14/Java-Constructor/</a>)</p>
+</blockquote>
+<p>测试类Main :</p>
+<blockquote>
+<p>测试类种 简单写了8个方法分别说明Java反射中的一些知识和使用。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 为了看清楚Java反射部分代码，所有异常都最后抛出来给虚拟机处理！</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InvocationTargetException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalArgumentException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NoSuchFieldException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SecurityException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NoSuchMethodException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException, NoSuchFieldException, NoSuchMethodException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo1.  通过Java反射机制得到类的包名和类名</span></span><br><span class="line"><span class="comment">//        Demo1();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//        //Demo2.  验证所有的类都是Class类的实例对象</span></span><br><span class="line"><span class="comment">//        Demo2();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo3.  通过Java反射机制，用Class 创建类对象[这也就是反射存在的意义所在]，无参构造</span></span><br><span class="line"><span class="comment">//        Demo3();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo4:  通过Java反射机制得到一个类的构造函数，并实现构造带参实例对象</span></span><br><span class="line"><span class="comment">//        Demo4();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo5:  通过Java反射机制操作成员变量, set 和 get</span></span><br><span class="line"><span class="comment">//        Demo5();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo6: 通过Java反射机制得到类的一些属性： 继承的接口，父类，函数信息，成员信息，类型等</span></span><br><span class="line"><span class="comment">//        Demo6();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Demo7: 通过Java反射机制调用类中方法</span></span><br><span class="line">        Demo7();</span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        //Demo8: 通过Java反射机制获得类加载器</span></span><br><span class="line"><span class="comment">//        Demo8();</span></span><br><span class="line"><span class="comment">//        System.out.println(&quot;===============================================&quot;);</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo1: 通过Java反射机制得到类的包名和类名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo1</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo1: 包名: &quot;</span> + person.getClass().getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">                + <span class="string">&quot;完整类名: &quot;</span> + person.getClass().getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//System.out.println(String.class); // 获取String的类型类，输出：class java.lang.String</span></span><br><span class="line">        <span class="comment">//System.out.println(Person.class.getName()); //javaClassExercise.fanshe.Person</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo2: 验证所有的类都是Class类的实例对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo2</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//定义两个类型都未知的Class , 设置初值为null, 看看如何给它们赋值成Person类</span></span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        Class&lt;?&gt; class2 = <span class="literal">null</span>;</span><br><span class="line">        <span class="comment">//Class&lt;?&gt; class3 = null;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//写法1, 可能抛出 ClassNotFoundException [多用这个写法]</span></span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo2:(写法1-.forName) 包名: &quot;</span> + class1.getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">                + <span class="string">&quot;完整类名: &quot;</span> + class1.getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//写法2</span></span><br><span class="line">        class2 = Person.class;</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo2:(写法2-.class) 包名: &quot;</span> + class2.getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">                + <span class="string">&quot;完整类名: &quot;</span> + class2.getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//System.out.println(class1 == class2); // true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo3: 通过Java反射机制，用Class 创建类对象[这也就是反射存在的意义所在]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo3</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        <span class="comment">//由于这里不能带参数，所以你要实例化的这个类Person，一定要有无参构造函数哈～</span></span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> (Person) class1.newInstance();</span><br><span class="line">        person.setAge(<span class="number">25</span>);</span><br><span class="line">        person.setName(<span class="string">&quot;Lomoa&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo3: &quot;</span> + <span class="string">&quot;Name：&quot;</span> + person.getName() + <span class="string">&quot; , Age: &quot;</span> + person.getAge());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo4: 通过Java反射机制得到一个类的构造函数，并实现创建带参实例对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InvocationTargetException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalArgumentException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo4</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person1</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person2</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        <span class="comment">//得到一系列构造函数集合</span></span><br><span class="line">        Constructor&lt;?&gt;[] constructors = class1.getConstructors();</span><br><span class="line"></span><br><span class="line">        person1 = (Person) constructors[<span class="number">0</span>].newInstance();</span><br><span class="line">        person1.setAge(<span class="number">20</span>);</span><br><span class="line">        person1.setName(<span class="string">&quot;lomoch&quot;</span>);</span><br><span class="line"></span><br><span class="line">        person2 = (Person) constructors[<span class="number">1</span>].newInstance(<span class="number">23</span>,<span class="string">&quot;chenD&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Demo4: &quot;</span> + person1.getName() + <span class="string">&quot; : &quot;</span> + person1.getAge()</span><br><span class="line">                + <span class="string">&quot;  ,   &quot;</span> + person2.getName() + <span class="string">&quot; : &quot;</span> + person2.getAge()</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo5: 通过Java反射机制操作成员变量, set 和 get</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalArgumentException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NoSuchFieldException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SecurityException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo5</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IllegalAccessException, SecurityException, NoSuchFieldException, InstantiationException, ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> class1.newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="type">Field</span> <span class="variable">personNameField</span> <span class="operator">=</span> class1.getDeclaredField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        personNameField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        personNameField.set(obj, <span class="string">&quot;Lomoa&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Demo5: 修改属性之后得到属性变量的值：&quot;</span> + personNameField.get(obj));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo6: 通过Java反射机制得到类的一些属性： 继承的接口，父类，函数信息，成员信息，类型等</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo6</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.SuperMan&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//getSuperclass取得父类名称</span></span><br><span class="line">        Class&lt;?&gt;  superClass = class1.getSuperclass();</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo6:  SuperMan类的父类名: &quot;</span> + superClass.getName());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Field[] fields = class1.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;类中的成员作用域: &quot;</span> + fields[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//getDeclaredMethods取得类方法</span></span><br><span class="line">        Method[] methods = class1.getDeclaredMethods();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; methods.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Demo6,取得SuperMan类的&quot;</span> + <span class="string">&quot;第&quot;</span> + i + <span class="string">&quot;个&quot;</span> + <span class="string">&quot;方法：&quot;</span>);</span><br><span class="line">            System.out.print(<span class="string">&quot;函数名：&quot;</span> + methods[i].getName());</span><br><span class="line">            System.out.print(<span class="string">&quot;函数返回类型：&quot;</span> + methods[i].getReturnType());</span><br><span class="line">            System.out.print(<span class="string">&quot;函数访问修饰符：&quot;</span> + Modifier.toString(methods[i].getModifiers()));</span><br><span class="line">            System.out.println(<span class="string">&quot;函数代码写法： &quot;</span> + methods[i]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//取得类实现的接口,因为接口类也属于Class,所以得到接口中的方法也是一样的方法得到哈</span></span><br><span class="line">        Class&lt;?&gt; interfaces[] = class1.getInterfaces();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; interfaces.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;实现的接口类名: &quot;</span> + interfaces[i].getName() );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo7: 通过Java反射机制调用类方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NoSuchMethodException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SecurityException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InvocationTargetException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalArgumentException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo7</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.SuperMan&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Demo7: \n调用无参方法fly()：&quot;</span>);</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> class1.getMethod(<span class="string">&quot;fly&quot;</span>);</span><br><span class="line">        method.invoke(class1.newInstance());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;调用有参方法walk(int m)：&quot;</span>);</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method1</span> <span class="operator">=</span> class1.getMethod(<span class="string">&quot;walk&quot;</span>,<span class="type">int</span>.class);</span><br><span class="line">        method1.invoke(class1.newInstance(),<span class="number">99</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demo8: 通过Java反射机制得到类加载器信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 在java中有三种类类加载器。[这段资料网上截取]</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     1）Bootstrap ClassLoader 此加载器采用c++编写，一般开发中很少见。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     2）Extension ClassLoader 用来进行扩展类的加载，一般对应的是jre\lib\ext目录中的类</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     3）AppClassLoader 加载classpath指定的类，是最常用的加载器。同时也是java中默认的加载器。</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo8</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.SuperMan&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">nameString</span> <span class="operator">=</span> class1.getClassLoader().getClass().getName();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Demo8: 类加载器类名: &quot;</span> + nameString);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行Demo1(); 输出: <code>Demo1: 包名: javaClassExercise.fanshe，完整类名: javaClassExercise.fanshe.Person</code></p>
+<p>Demo1()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo1</span><span class="params">()</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">       System.out.println(<span class="string">&quot;Demo1: 包名: &quot;</span> + person.getClass().getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">               + <span class="string">&quot;完整类名: &quot;</span> + person.getClass().getName());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Demo1中，以new关键字的方式创建了Person对象person, 通过该对象person的getClass()方法获得该person对象的Class，在通过此Class获得包名和类名。</p>
+<p>Demo2()方法</p>
+<blockquote>
+<p>通过forName方法获得类型类；</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo2</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//定义两个类型都未知的Class , 设置初值为null, 看看如何给它们赋值成Person类</span></span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        Class&lt;?&gt; class2 = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//写法1, 可能抛出 ClassNotFoundException [多用这个写法]</span></span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo2:(写法1) 包名: &quot;</span> + class1.getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">                + <span class="string">&quot;完整类名: &quot;</span> + class1.getName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//写法2</span></span><br><span class="line">        class2 = Person.class;</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo2:(写法2) 包名: &quot;</span> + class2.getPackage().getName() + <span class="string">&quot;，&quot;</span></span><br><span class="line">                + <span class="string">&quot;完整类名: &quot;</span> + class2.getName());</span><br><span class="line">        System.out.println(class1 == class2); <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分析，forName()方法是Class类中的静态方法，作用是返回一个类(要求JVM查找并加载制定的类);</p>
+</blockquote>
+<p>Demo3()方法</p>
+<blockquote>
+<p>通过反射 创建类对象。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo3</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">        <span class="comment">//由于这里不能带参数，所以要实例化的这个类Person，一定要显式地声明无参构造函数，如果只声明含参构造器那么默认的无参构造器就被覆盖,只有显式地声明才可以～</span></span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> (Person) class1.newInstance();</span><br><span class="line">        person.setAge(<span class="number">25</span>);</span><br><span class="line">        person.setName(<span class="string">&quot;Lomoa&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo3: &quot;</span> + person.getName() + <span class="string">&quot; : &quot;</span> + person.getAge());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>newInstance()方法是Class类中的一个泛型方法。</p>
+</blockquote>
+<blockquote>
+<p>Person person &#x3D; (Person) class1.newInstance(); &#x2F;&#x2F;newInstance返回的是一个对象，用缺省构造函数创建一个该类的对象，并将新创建的这个对象强转为Person类的类型；</p>
+</blockquote>
+<p>如果只定义了含参构造器呢？参考博文，通过反射创建类实例的2种方式 – Java Create Object By Reflect. </p>
+<p>或看Demo4().</p>
+<p>Demo5() 操作成员属性示例</p>
+<blockquote>
+<p>主要利用了反射相关类里的Field类。更多反射相关类，点此查看：<a href="http://lomo.space/2016/08/14/java-reflect/">http://lomo.space/2016/08/14/java-reflect/</a></p>
+</blockquote>
+<p><code>Filed类</code>提供了接口&#x2F;类的属性信息操作方法</p>
+<p><code>Class类</code>的<code>getDeclaredField</code>方法返回一个Field类型对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> class1.newInstance(); <span class="comment">//创建类对象obj</span></span><br><span class="line"></span><br><span class="line"><span class="type">Field</span> <span class="variable">personNameField</span> <span class="operator">=</span> class1.getDeclaredField(<span class="string">&quot;name&quot;</span>);  <span class="comment">//获取的是String类型属性, set时也要传入String类型值，如果是age为int型，下面的set就应传入int型</span></span><br><span class="line">personNameField.setAccessible(<span class="literal">true</span>); <span class="comment">// 关闭JDK安全检查，提升反射速度</span></span><br><span class="line">personNameField.set(obj, <span class="string">&quot;Lomoa&quot;</span>); <span class="comment">//使用Field类的set方法给对象obj添加属性值&quot;Lomoa&quot;（上一步getDeclaredField获取的是String-&gt;name属性）</span></span><br></pre></td></tr></table></figure>
+
+<p>由于Person类中声明的两个<strong>私有属性</strong> <code>private int age;</code> 和 <code>private String name;</code>, 所以<code>personNameField.setAccessible(true);</code>必须设置为true</p>
+<p>如果Person类添加一个public属性如：</p>
+<p><code>Person</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">public</span> String gender;</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure>
+<p><code>Main</code>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo5</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IllegalAccessException, SecurityException, NoSuchFieldException, InstantiationException, ClassNotFoundException</span><br><span class="line">   &#123;</span><br><span class="line">       Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">       class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.Person&quot;</span>);</span><br><span class="line">       <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> class1.newInstance();</span><br><span class="line"></span><br><span class="line">       <span class="type">Field</span> <span class="variable">personNameField</span> <span class="operator">=</span> class1.getDeclaredField(<span class="string">&quot;gender&quot;</span>); <span class="comment">// public级别的</span></span><br><span class="line">       personNameField.setAccessible(<span class="literal">false</span>); <span class="comment">// 可以为FALSE，为true也可以，但是设置为true最好。</span></span><br><span class="line">       personNameField.set(obj, <span class="string">&quot;Lomoa&quot;</span>);</span><br><span class="line">       </span><br><span class="line">       System.out.println(<span class="string">&quot;Demo5: 修改属性之后得到属性变量的值：&quot;</span> + personNameField.get(obj));</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后此项设置为false，也可以通过编译成功执行。</p>
+<p>所以得到的Field类型对象后，就可以对该类型的对象personNameField进行操作set操作设置属性值，通过get(obj)获取属性值。</p>
+<p>Demo6 获得类的属性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo6</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.SuperMan&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//getSuperclass 取得父类名称</span></span><br><span class="line">        Class&lt;?&gt;  superClass = class1.getSuperclass();</span><br><span class="line">        System.out.println(<span class="string">&quot;Demo6:  SuperMan类的父类名: &quot;</span> + superClass.getName());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Field[] fields = class1.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;类中的成员作用域: &quot;</span> + fields[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//getDeclaredMethods 取得类方法</span></span><br><span class="line">        Method[] methods = class1.getDeclaredMethods();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; methods.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Demo6,取得SuperMan类的&quot;</span> + <span class="string">&quot;第&quot;</span> + i + <span class="string">&quot;个&quot;</span> + <span class="string">&quot;方法：&quot;</span>);</span><br><span class="line">            System.out.print(<span class="string">&quot;函数名：&quot;</span> + methods[i].getName());</span><br><span class="line">            System.out.print(<span class="string">&quot;函数返回类型：&quot;</span> + methods[i].getReturnType());</span><br><span class="line">            System.out.print(<span class="string">&quot;函数访问修饰符：&quot;</span> + Modifier.toString(methods[i].getModifiers()));</span><br><span class="line">            System.out.println(<span class="string">&quot;函数代码写法： &quot;</span> + methods[i]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;===============================================&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//取得类实现的接口,因为接口类也属于Class,所以得到接口中的方法也是一样的方法得到哈</span></span><br><span class="line">        Class&lt;?&gt; interfaces[] = class1.getInterfaces();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; interfaces.length; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;实现的接口类名: &quot;</span> + interfaces[i].getName() );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Demo6:  SuperMan类的父类名: javaClassExercise.fanshe.Person</span><br><span class="line">===============================================</span><br><span class="line">类中的成员作用域: private boolean javaClassExercise.fanshe.SuperMan.BlueBriefs</span><br><span class="line">===============================================</span><br><span class="line">Demo6,取得SuperMan类的第0个方法：</span><br><span class="line">函数名：isBlueBriefs函数返回类型：boolean函数访问修饰符：public函数代码写法： public boolean javaClassExercise.fanshe.SuperMan.isBlueBriefs()</span><br><span class="line">Demo6,取得SuperMan类的第1个方法：</span><br><span class="line">函数名：setBlueBriefs函数返回类型：void函数访问修饰符：public函数代码写法： public void javaClassExercise.fanshe.SuperMan.setBlueBriefs(boolean)</span><br><span class="line">Demo6,取得SuperMan类的第2个方法：</span><br><span class="line">函数名：fly函数返回类型：void函数访问修饰符：public函数代码写法： public void javaClassExercise.fanshe.SuperMan.fly()</span><br><span class="line">Demo6,取得SuperMan类的第3个方法：</span><br><span class="line">函数名：walk函数返回类型：void函数访问修饰符：public函数代码写法： public void javaClassExercise.fanshe.SuperMan.walk(int)</span><br><span class="line">===============================================</span><br><span class="line">实现的接口类名: javaClassExercise.fanshe.ActionInterface</span><br><span class="line">===============================================</span><br></pre></td></tr></table></figure>
+
+<p>Demo7 通过反射调用类方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Demo7</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException</span><br><span class="line">    &#123;</span><br><span class="line">        Class&lt;?&gt; class1 = <span class="literal">null</span>;</span><br><span class="line">        class1 = Class.forName(<span class="string">&quot;javaClassExercise.fanshe.SuperMan&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;Demo7: \n调用无参方法fly()：&quot;</span>);</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> class1.getMethod(<span class="string">&quot;fly&quot;</span>);</span><br><span class="line">        method.invoke(class1.newInstance());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;调用有参方法walk(int m)：&quot;</span>);</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method1</span> <span class="operator">=</span> class1.getMethod(<span class="string">&quot;walk&quot;</span>,<span class="type">int</span>.class);</span><br><span class="line">        method1.invoke(class1.newInstance(),<span class="number">99</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getMethod()</code>源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Method <span class="title function_">getMethod</span><span class="params">(String name, Class&lt;?&gt;... parameterTypes)</span></span><br><span class="line">        <span class="keyword">throws</span> NoSuchMethodException, SecurityException &#123;</span><br><span class="line">        checkMemberAccess(Member.PUBLIC, Reflection.getCallerClass(), <span class="literal">true</span>);</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> getMethod0(name, parameterTypes);</span><br><span class="line">        <span class="keyword">if</span> (method == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchMethodException</span>(getName() + <span class="string">&quot;.&quot;</span> + name + argumentTypesToString(parameterTypes));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> method;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Method类的invoke()方法？</p>
+<p><code>invoke()</code>方法属于Method类中的方法, 该方法返回类型为Object类型。<br>所以使用invoke方法调用的就是Method类代表的方法</p>
+<p>参考：<br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/onlywujun/p/3519037.html">http://www.cnblogs.com/onlywujun/p/3519037.html</a></p>
+<p>那么为什么要使用反射？</p>
+<p>反射可以使得在不知道类的内部结构情况下，根据配置的字符串去调用一个类的方法。<br>很多框架代码都是这样去实现的。但是一般的编程，是不需要这样做的，因为类都是自己写的，怎么调用，怎么生成都是清楚的。</p>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2016/12/20/understand-java-reflect-by-one-example/" target="_blank" title="understand java reflect by one example">understand java reflect by one example</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/program/">program</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/reflect/">reflect</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2016/12/20/understand-java-reflect-by-one-example/" data-title="understand java reflect by one example | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/12/21/centos-install-ftp/" title="CentOS 6.5 安装FTP">
+  <strong>上一篇：</strong><br/>
+  <span>
+  CentOS 6.5 安装FTP</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/12/06/vertival-align兼容问题/"  title="vertival-align兼容问题">
+ <strong>下一篇：</strong><br/> 
+ <span>vertival-align兼容问题
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E6%9E%90Java%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">简析Java反射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80-%E7%B1%BB%E5%9E%8B%E7%B1%BB-%E5%85%B3%E4%BA%8EgetClass-x2F-class"><span class="toc-number">1.1.</span> <span class="toc-text">前言-类型类(关于getClass&#x2F;.class)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

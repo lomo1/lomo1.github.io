@@ -1,0 +1,824 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>k8s-virtual-machine | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="k8s之机器配置[一]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s-virtual-machine">
+<meta property="og:url" content="http://lomo.space/2018/12/07/k8s-virtual-machine/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="k8s之机器配置[一]">
+<meta property="og:locale">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70375745-9a8ebf80-193c-11ea-8a5f-0083d5aa19ca.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70375829-97e09a00-193d-11ea-9467-a94dd5e8b1d1.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70375981-505b0d80-193f-11ea-9a5d-e09261ddfdd5.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70376041-d4ad9080-193f-11ea-96cb-906972bd2a1e.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70376091-3d950880-1940-11ea-88cf-90500216dc43.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70376119-7e8d1d00-1940-11ea-9e88-970bb1541e40.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/18479611/70376181-21de3200-1941-11ea-9f73-5f6f07dd7824.png">
+<meta property="article:published_time" content="2018-12-07T13:45:48.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.883Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/18479611/70375745-9a8ebf80-193c-11ea-8a5f-0083d5aa19ca.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/12/07/k8s-virtual-machine/" title="k8s-virtual-machine" itemprop="url">k8s-virtual-machine</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2018-12-07T13:45:48.000Z" itemprop="datePublished"> Published 2018-12-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#K8S-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BC%80%E5%B1%B1%E7%AF%87%E2%80%93%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">K8S 学习笔记之开山篇–虚拟机配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-amp-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">系统基础软件安装&amp;配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">系统软件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">系统设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker"><span class="toc-number">1.2.3.</span> <span class="toc-text">docker</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="K8S-学习笔记之开山篇–虚拟机配置"><a href="#K8S-学习笔记之开山篇–虚拟机配置" class="headerlink" title="K8S 学习笔记之开山篇–虚拟机配置"></a>K8S 学习笔记之开山篇–虚拟机配置</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>所需软件: VirtualBox(测试所用物理机为 MBP 顶配)</p>
+<blockquote>
+<p>本地虚拟机集群, 所有机器均借助 VirtualBox 和 CentOS7 实现.</p>
+</blockquote>
+<p>虚拟主机系统统一采用：CentOS-7-x86_64-Minimal-1804.iso</p>
+<p>iso 下载地址: <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso">http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso</a></p>
+<ol>
+<li>新建三台虚拟机分别设置 <code>hostname</code> 为 <code>k8s-master</code>, <code>k8s-node01</code>, <code>k8s-node02</code></li>
+</ol>
+<blockquote>
+<p>设置 hostname 使用 hostnamectl 命令即可</p>
+</blockquote>
+<p>如: <code>hostnamectl set-hostname k8s-node01</code></p>
+<blockquote>
+<p>虚拟机启动后, 窗口调整快捷键为: command + c</p>
+</blockquote>
+<p>虚拟机安装使用可参考: <a target="_blank" rel="noopener" href="https://blog.csdn.net/yang_yun_hao/article/details/87917657">https://blog.csdn.net/yang_yun_hao/article/details/87917657</a></p>
+<ol start="2">
+<li>虚拟机无法连接外网问题解决:</li>
+</ol>
+<p>1&gt; virtualbox 设置</p>
+<p>偏好设置 -&gt; 网络 -&gt; 添加新 NAT 网络, 双击并勾选启用网络、支持 DHCP</p>
+<p><img src="https://user-images.githubusercontent.com/18479611/70375745-9a8ebf80-193c-11ea-8a5f-0083d5aa19ca.png" alt="image"></p>
+<ol start="3">
+<li>CentOS 网络设置</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s3</span><br><span class="line"><span class="comment"># 将 ONBOOT = no 改为 yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再重启</span></span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或重启网卡服务即可</span></span><br><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下, 虚拟机的 <code>IP</code> 由 VirtualBox的 <code>DHCP</code> 服务动态分配, 这在多态虚拟机的情况下不好管理, 最好一台机器固定一个 <code>IP</code>, 这时就需要配置静态 <code>IP</code>.</p>
+<p>管理 -&gt; 主机网络管理器，点击创建按钮即可。</p>
+<p><img src="https://user-images.githubusercontent.com/18479611/70375829-97e09a00-193d-11ea-9467-a94dd5e8b1d1.png" alt="image"></p>
+<p>然后每个虚拟机配置上该网卡即可。</p>
+<blockquote>
+<p>ip addr|grep inet</p>
+</blockquote>
+<ol start="4">
+<li>ssh login 配置</li>
+</ol>
+<p>配置这个, 是为了方便直接在物理机登陆虚拟机系统, 方便操作.</p>
+<p>方式1:<br>使用 <code>ssh-copy-id</code> 命令将 key 写到远程机器的 ~&#x2F;.ssh&#x2F;authorized_key 文件中.</p>
+<p>(该方法必须2端操作时为同一个用户名)</p>
+<p>方式2:</p>
+<p>将 本地机器的 rsa copy 至所需登陆的服务机器上.</p>
+<blockquote>
+<p>scp ~&#x2F;.ssh&#x2F;id_rsa.pub <a href="mailto:&#114;&#111;&#x6f;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#56;&#x2e;&#53;&#54;&#46;&#49;&#48;&#49;">&#114;&#111;&#x6f;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#56;&#x2e;&#53;&#54;&#46;&#49;&#48;&#49;</a>:.ssh&#x2F;id_rsa.pub</p>
+</blockquote>
+<p>在B上的命令 (先于 A执行，A - 为本地机器):</p>
+<blockquote>
+<p>touch &#x2F;root&#x2F;.ssh&#x2F;authorized_keys # (如果已经存在这个文件, 跳过这条)</p>
+</blockquote>
+<p>将id_rsa.pub文件从 A本地机器上 上传到 B 机器后再执行该操作：</p>
+<blockquote>
+<p>cat &#x2F;root&#x2F;.ssh&#x2F;id_rsa.pub &gt;&gt; &#x2F;root&#x2F;.ssh&#x2F;authorized_keys # (将id_rsa.pub的内容追加到authorized_keys 中)</p>
+</blockquote>
+<p>测试登陆:</p>
+<p>ssh root@k8s-master</p>
+<p>ok.</p>
+<p>添加 alias 更方便登陆:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"><span class="comment"># k8s 集群信息</span></span><br><span class="line"><span class="built_in">alias</span> k8s_master=<span class="string">&quot;ssh root@k8s-master&quot;</span></span><br><span class="line"><span class="built_in">alias</span> k8s_node01=<span class="string">&quot;ssh root@k8s-node01&quot;</span></span><br><span class="line"><span class="built_in">alias</span> k8s_node02=<span class="string">&quot;ssh root@k8s-node02&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="系统基础软件安装-amp-配置"><a href="#系统基础软件安装-amp-配置" class="headerlink" title="系统基础软件安装&amp;配置"></a>系统基础软件安装&amp;配置</h3><h4 id="系统软件"><a href="#系统软件" class="headerlink" title="系统软件"></a>系统软件</h4><blockquote>
+<p>每台机器都安装</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line">yum install -y conntrack ntpdate ntp ipvsadm ipset jq iptables curl sysstat libseccomp wget</span><br></pre></td></tr></table></figure>
+
+<h4 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h4><p>2.1 关闭防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld &amp;&amp; systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.</span><br><span class="line">Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.</span><br></pre></td></tr></table></figure>
+
+<p>2.2 关闭 selinux</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0 &amp;&amp; sed -i <span class="string">&quot;s/SELINUX=enforcing/SELINUX=disabled/g&quot;</span> /etc/selinux/config</span><br><span class="line"><span class="comment"># 此处无输出任何内容哈.</span></span><br></pre></td></tr></table></figure>
+
+<p>2.3 关闭 swap</p>
+<p>单纯的执行 <code>swapoff</code> 只是临时关闭, 下次重启后还是会打开. 因此需要修改文件: </p>
+<blockquote>
+<p>vim &#x2F;etc&#x2F;fstab # 将 swap 分区一行注释即可.</p>
+</blockquote>
+<p><img src="https://user-images.githubusercontent.com/18479611/70375981-505b0d80-193f-11ea-9a5d-e09261ddfdd5.png" alt="image"></p>
+<p>使用命令行关闭方式:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a &amp;&amp; sed -i <span class="string">&quot;s/\/dev\/mapper\/centos-swap/\#\/dev\/mapper\/centos-swap/g&quot;</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<h4 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h4><ol>
+<li>安装<br>为了加速在国内安装, 使用阿里云镜像:</li>
+</ol>
+<blockquote>
+<p>wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;docker-ce <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</a></p>
+</blockquote>
+<p>安装 docker（所有机器执行）：</p>
+<blockquote>
+<p>yum install docker-ce -y</p>
+</blockquote>
+<p>但是提示没有可用软件包(-_-||):</p>
+<p><img src="https://user-images.githubusercontent.com/18479611/70376041-d4ad9080-193f-11ea-96cb-906972bd2a1e.png" alt="image"></p>
+<p>解决方案1:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 依次执行如下命令: </span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">yum makecache fast</span><br><span class="line">yum install docker-ce -y  <span class="comment"># 非一般的速度就下载安装完毕 docker</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">docker -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line">Docker version 19.03.4, build 9013bf583a</span><br></pre></td></tr></table></figure>
+
+<p>解决方案2:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line">sudo yum install docker-ce -y</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-images.githubusercontent.com/18479611/70376091-3d950880-1940-11ea-88cf-90500216dc43.png" alt="image"></p>
+<ol start="2">
+<li>配置(master、node 均需要)</li>
+</ol>
+<p>启动 docker 并设定随机启动: <code>systemctl enable docker &amp;&amp; systemctl start docker</code></p>
+<p><img src="https://user-images.githubusercontent.com/18479611/70376119-7e8d1d00-1940-11ea-9e88-970bb1541e40.png" alt="image"></p>
+<p>调整 <code>docker</code> 部分参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /etc/docker</span><br><span class="line">vi /etc/docker/daemon.json</span><br><span class="line"><span class="comment"># 添加如下内容:</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;exec-opts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;native.cgroupdriver=systemd&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;log-driver&quot;</span><span class="punctuation">:</span> <span class="string">&quot;json-file&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;log-opts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;max-size&quot;</span><span class="punctuation">:</span> <span class="string">&quot;100m&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;storage-driver&quot;</span><span class="punctuation">:</span> <span class="string">&quot;overlay2&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;storage-opts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;overlay2.override_kernel_check=true&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://5twf62k1.mirror.aliyuncs.com&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改前：<br>确认 docker 的 Cgroup Driver 信息：</p>
+<blockquote>
+<p>docker info |grep Cgroup</p>
+</blockquote>
+<blockquote>
+<p>默认是  Cgroup Driver: cgroupfs</p>
+</blockquote>
+<p>修改后：</p>
+<blockquote>
+<p>Cgroup Driver: systemd</p>
+</blockquote>
+<p>重启 docker:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkdir -p /etc/systemd/system/docker.service.d</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-images.githubusercontent.com/18479611/70376181-21de3200-1941-11ea-9f73-5f6f07dd7824.png" alt="image"></p>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2018/12/07/k8s-virtual-machine/" target="_blank" title="k8s-virtual-machine">k8s-virtual-machine</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/study/">study</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/k8s/">k8s</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2018/12/07/k8s-virtual-machine/" data-title="k8s-virtual-machine | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/12/10/k8s-config/" title="k8s-config">
+  <strong>上一篇：</strong><br/>
+  <span>
+  k8s-config</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/12/02/docker-deploy/"  title="docker deploy">
+ <strong>下一篇：</strong><br/> 
+ <span>docker deploy
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#K8S-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BC%80%E5%B1%B1%E7%AF%87%E2%80%93%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">K8S 学习笔记之开山篇–虚拟机配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85-amp-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">系统基础软件安装&amp;配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">系统软件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">系统设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker"><span class="toc-number">1.2.3.</span> <span class="toc-text">docker</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

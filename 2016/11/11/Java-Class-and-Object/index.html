@@ -1,0 +1,950 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java Class and Object | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="Java类与对象, 类对象初始化顺序, TestNG原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Class and Object">
+<meta property="og:url" content="http://lomo.space/2016/11/11/Java-Class-and-Object/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="Java类与对象, 类对象初始化顺序, TestNG原理">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-11-11T14:25:18.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.870Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/11/Java-Class-and-Object/" title="Java Class and Object" itemprop="url">Java Class and Object</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2016-11-11T14:25:18.000Z" itemprop="datePublished"> Published 2016-11-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">Java类和对象[学习笔记]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">类的创建和初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">类的创建规则：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%92%8C%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text">构造方法和变量的初始化顺序:</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#static%E4%B8%8E%E9%9D%9Estatic%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">static与非static区别</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA-new-%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.4.</span> <span class="toc-text">对象创建(new)过程总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%E3%80%812-%E7%AD%94%E6%A1%88"><span class="toc-number">1.3.5.</span> <span class="toc-text">问题1、2 答案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Q1"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Q1</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Q2"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Q2</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%84-%E6%97%A0main%E5%87%BD%E6%95%B0%E8%BF%90%E8%A1%8CJava%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.6.</span> <span class="toc-text">附:无main函数运行Java代码</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#TestNG%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">TestNG运行原理?</span></a></li></ol></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="Java类和对象-学习笔记"><a href="#Java类和对象-学习笔记" class="headerlink" title="Java类和对象[学习笔记]"></a>Java类和对象[学习笔记]</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>类, 是抽象的;</p>
+<blockquote>
+<p>将对象的属性和方法封装在一起就组成了类。</p>
+</blockquote>
+<p>对象, 是具体的;</p>
+<blockquote>
+<p>在面向对象编程中，主要思想：一切皆为对象！以对象为单位进行coding</p>
+</blockquote>
+<h3 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h3><blockquote>
+<p>为什么Java中的main函数必须是static静态的？</p>
+</blockquote>
+<blockquote>
+<p>为什么main方法中必须带有参数而且是不定参数String[] value形式？</p>
+</blockquote>
+<p>这是自己学习以来经常会在脑海里出现的问题，现在进行系统学习后，简单进行总结，答案在最后。</p>
+<h3 id="类的创建和初始化"><a href="#类的创建和初始化" class="headerlink" title="类的创建和初始化"></a>类的创建和初始化</h3><h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class 类名 &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数</span></span><br><span class="line">    <span class="keyword">public</span> 类名() &#123;</span><br><span class="line">        <span class="comment">//do sth...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>默认地，如果一个类没有显式地申明构造函数，则在编译执行过程中会自动创建一个构造函数!</p>
+</blockquote>
+<blockquote>
+<p>而构造方法是一个类被初始化过程中必须执行的方法！！</p>
+</blockquote>
+<h5 id="类的创建规则："><a href="#类的创建规则：" class="headerlink" title="类的创建规则："></a>类的创建规则：</h5><blockquote>
+<p>一个.java文件中可以有多个类，但是 <strong>至多</strong> 只能有一个public类 一般情况，该类里放置main方法，作为程序入口!</p>
+</blockquote>
+<blockquote>
+<p>可以有0个public的类, 那么.java文件的名可以与其中任何一个类名字相同即可</p>
+</blockquote>
+<blockquote>
+<p>如果有public类，则.java文件名字必须与该public类名相同！！！</p>
+</blockquote>
+<p>关于编译:</p>
+<blockquote>
+<p>编译时，会为每个.java文件创建一个对应的.class文件</p>
+</blockquote>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><blockquote>
+<p>一般，通过类的构造器来创建对象, 构造器即：构造函数，是一个与类同名的方法；在new时对其传递一些参数完成初始化.</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">类名  变量名 =  <span class="keyword">new</span> 类名(<span class="string">&quot;参数&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>E.g.</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">classTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    String name;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">double</span> height;</span><br><span class="line">    <span class="type">double</span> weight;</span><br><span class="line">    String interest;</span><br><span class="line">    <span class="type">boolean</span> sex;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">classTest</span><span class="params">(String name, <span class="type">int</span> age, <span class="type">double</span> height, <span class="type">double</span> weight, String interest, <span class="type">boolean</span> sex)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.height = height;</span><br><span class="line">        <span class="built_in">this</span>.weight = weight;</span><br><span class="line">        <span class="built_in">this</span>.interest = interest;</span><br><span class="line">        <span class="built_in">this</span>.sex = sex;</span><br><span class="line">        <span class="comment">//还有其它很多公有属性</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">classTest</span> <span class="variable">test</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">classTest</span>(<span class="string">&quot;Lomo&quot;</span>, <span class="number">25</span>, <span class="number">165.00</span>, <span class="number">110.0</span>, <span class="string">&quot;read&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        String  male;</span><br><span class="line">        <span class="keyword">if</span>(test.sex) &#123;</span><br><span class="line">            male = <span class="string">&quot;男&quot;</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            male = <span class="string">&quot;女&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">&quot;Name: &quot;</span> + test.name + <span class="string">&quot;，Age: &quot;</span> + test.age + <span class="string">&quot;，Height: &quot;</span> + test.height + <span class="string">&quot;，Weight: &quot;</span>+ test.weight + <span class="string">&quot;，Interest&quot;</span> + test.interest + <span class="string">&quot;，Sex: &quot;</span> + male);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 运行输出: Name: Lomo，Age: 25，Height: 165.0，Weight: 110.0，Interestread，Sex: 男</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>【总结】 初始化&#x2F;实例化一个类 这个new 的过程:</p>
+</blockquote>
+<blockquote>
+<p>编译器会首先检查类中是否有显式地申明构造函数，若有，则new的时候会直接调用该定义的构造器&#x2F;构造函数;  若没有显式地申明构造函数，则编译器会自动为该类增加一个无参数的空构造方法：类名(){};</p>
+</blockquote>
+<h4 id="构造方法和变量的初始化顺序"><a href="#构造方法和变量的初始化顺序" class="headerlink" title="构造方法和变量的初始化顺序:"></a>构造方法和变量的初始化顺序:</h4><blockquote>
+<p>类在被初始化new的过程中, 构造方法和变量的初始化顺序?</p>
+</blockquote>
+<p>结论：</p>
+<blockquote>
+<p>无论类中的(类)变量申明在方法&#x2F;构造方法前面或者后面，变量都会优先于一般方法&#x2F;构造方法 执行！！！</p>
+</blockquote>
+<blockquote>
+<p>无论类变量在类中相对于方法的位置是在方法前或后，只要在方法的外部，就一定会先初始化变量！！！</p>
+</blockquote>
+<p>E.g.1<br><code>Person.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">String</span> <span class="variable">t</span> <span class="operator">=</span> <span class="string">&quot;lomo&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器/构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Person: &quot;</span> + id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Build</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Build</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Build</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">Person</span> <span class="variable">p1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Build</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;这是Build类的构造函数！&quot;</span>);</span><br><span class="line">        <span class="type">Person</span> <span class="variable">p2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Person</span> <span class="variable">p3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出：</span></span><br><span class="line">        <span class="comment">// Person: 1</span></span><br><span class="line">        <span class="comment">// Person: 3</span></span><br><span class="line">        <span class="comment">// 这是Build类的构造函数！</span></span><br><span class="line">        <span class="comment">// Person: 2</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>分析</strong><br>运行时，找到main方法，从main方法作为入口开始执行程序，在main方法中new了一个Build类对象b, 再看Build类, Build类中有两个变量p1, p3 和 一个Build类的显式声明的无参数的构造函数, 根据开头的结论：类变量初始化优先于构造函数初始化, 所以在main函数中new一个Build类实例时，会先初始化Build类的类变量p1, p3， 所以依次输出 <code>Person: 1</code>, <code>Person: 3</code>, 然后执行构造器的初始化, 打印了构造方法Build的结果 <code>这是Build类的构造函数！</code>, Build构造函数中第二行语句又new了一个Person类的实例，所以此时又按照刚才所述，同理先初始化类变量，此时Person类中无类变量，所以根据给new时给传入的参数2 执行Person类的构造方法，输出<code>Person: 2</code>.</p>
+</blockquote>
+<blockquote>
+<p>分析完毕!!!</p>
+</blockquote>
+<blockquote>
+<p>【实际使用】过程中，构造函数：通常 构造函数是为了在new创建类实例(对象)时就可以直接获取该类的一些属性.</p>
+</blockquote>
+<h5 id="static与非static区别"><a href="#static与非static区别" class="headerlink" title="static与非static区别"></a>static与非static区别</h5><p>首先，对E.g.1改造：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器、构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Person: &quot;</span> + id);</span><br><span class="line">        <span class="comment">//Lomo lomo = new Lomo(&quot;LOMO&quot;);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * static 静态代码块</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;这是static静态代码块！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 非静态块</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;这是非静态代码块！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 主函数、程序执行入口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Build</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Build</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Build</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">Person</span> <span class="variable">p1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Build</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;这是Build类！&quot;</span>);</span><br><span class="line">        <span class="type">Person</span> <span class="variable">p2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Person</span> <span class="variable">p3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行，输出：</span></span><br><span class="line"><span class="comment">//这是Person类中的static静态代码块！</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Build类！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>分析</strong></p>
+</blockquote>
+<blockquote>
+<p>Tips: 类中的static静态代码块或静态变量、静态方法，在初始化该类时，无论new多少，都只初始化一次然后保存在内存中，供使用！！！</p>
+</blockquote>
+<blockquote>
+<p>从main函数入口开始执行程序代码，被static修饰的变量或方法也属于e.g.1中分析所述的类变量、类方法(且 <strong>只被初始化一次</strong>)，所以在main函数开始执行时，Person类对应的.class已被装载完毕，等待main函数去执行，Java解释器会提前装载好main函数所在的Person类，而Person类中static声明的代码块就被初始化&#x2F;执行, 打印出<code>这是Person类中的static静态代码块！</code>, 接着执行非静态代码块； 然后执行Build类对象b的初始化, 按照之前所述的原则, 初始化对象b时，调用的是Build类，所以要先对Build类的类变量p1初始化，执行new Person(1); new Person操作又是对Person类初始化，该初始化需要先执行Person类中的非静态代码块，所以先输出 <code>这是Person类中的非静态代码块！</code>, Person类中此时无其它类变量、类方法，所以就会执行Person的构造方法输出<code>Person: 1</code>, 此时可以理解为：主函数main方法中的第一部分执行完毕，即：<code> Person p1 = new Person(1);</code> , 按照之前所述规则，继续执行类变量p3初始化, 同上, 一次输出<code>这是Person类中的非静态代码块！</code> 和 <code>Person: 3</code>, 此时相当于主函数的第二部分执行完毕; 到此 Build类中的类变量全部初始化完毕; 第三部分: 执行Build类的构造函数, 顺序执行输出 <code>这是Build类！</code>, <code>Person p2 = new Person(2);</code> 再按照之前的规则, 一次输出: <code>这是Person类中的非静态代码块！</code>, <code>Person: 2</code>。</p>
+</blockquote>
+<blockquote>
+<p>分析完毕！！！</p>
+</blockquote>
+<blockquote>
+<p>【总结】</p>
+</blockquote>
+<blockquote>
+<p>被声明为static的变量或者方法，或者前面说的块，都属于类变量、类方法.</p>
+</blockquote>
+<blockquote>
+<p>static 静态数据特点(static变量、方法)：初始化只在类的装载过程中只执行一次！！！<br>整个过程中只进行一次初始化，在内存中只开辟一个空间，不论在哪儿调用，值保持一致。一旦被修改，所有引用它的地方都会跟着修改。 一般直接通过类名进行调用。</p>
+</blockquote>
+<blockquote>
+<p>类变量、类里的方法，外部对象对他们的引用还可以直接使用类名.变量名或类名.方法名 进行引用(在一个类中引用另一个类的变量,则该变量在另一个类中必须定义为private类型, 且范围不能是private修饰的).</p>
+</blockquote>
+<blockquote>
+<p>非静态块： 每new实例化一个对象时，就会执行一次非静态对象！！！</p>
+</blockquote>
+<p>对E.g.2 添加一行代码，在main函数中</p>
+<p>E.g.3</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Build</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Build</span>();</span><br><span class="line">System.out.println(<span class="string">&quot;第二次new Build 类!&quot;</span>); <span class="comment">//为了区分便于查看输出结果</span></span><br><span class="line"><span class="type">Build</span> <span class="variable">b2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Build</span>();  <span class="comment">//见下边的总结6）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//输出结果:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的static静态代码块！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 1</span></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 3</span></span><br><span class="line"><span class="comment">//这是Build类！</span></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二次new Build 类!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的static静态代码块！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 1</span></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 3</span></span><br><span class="line"><span class="comment">//这是Build类！</span></span><br><span class="line"><span class="comment">//这是Person类中的非静态代码块！</span></span><br><span class="line"><span class="comment">//Person: 2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="对象创建-new-过程总结"><a href="#对象创建-new-过程总结" class="headerlink" title="对象创建(new)过程总结"></a>对象创建(new)过程总结</h4><blockquote>
+<ol>
+<li>装载.class文件，创建class对象，对由static声明的变量、方法进行初始化 且 只初始化一次！</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>new实例化时，在堆内存进行空间分配</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>执行非静态块</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4">
+<li>执行 所有方法外定义的(类)变量的初始化</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="5">
+<li>执行构造器&#x2F;构造函数(方法)  [ 基本可以认为 构造函数是   一个类new过程中最后执行的 ]</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="6">
+<li>针对同一个类，同时new多个该类的对象实例，则每次new的过程都遵循、并按顺序执行 上述原则</li>
+</ol>
+</blockquote>
+<h4 id="问题1、2-答案"><a href="#问题1、2-答案" class="headerlink" title="问题1、2 答案"></a>问题1、2 答案</h4><h5 id="Q1"><a href="#Q1" class="headerlink" title="Q1"></a>Q1</h5><blockquote>
+<p>Java中main函数为何必须是static修饰符？</p>
+</blockquote>
+<p>针对上述static分析、总结，现在来解释 开头的问题1：</p>
+<blockquote>
+<p>Java中main函数为何必须是static修饰符？</p>
+</blockquote>
+<p>个人 + 网上各类博客文章 总结：</p>
+<blockquote>
+<p>运行Java应用程序时，需要依赖JVM的运行。</p>
+</blockquote>
+<blockquote>
+<p>当 Run某个类时，会启动虚拟机去执行该类中的main方法. JVM运行Java应用程序时，首先会去调用main方法, 而不必实例化main函数所在的这个类<br>(不用去new一个对象), 通过类名来调用需要限制为<code>public</code>, 同时JVM规定main函数不能有返回值，因此返回类型为<code>void</code>.</p>
+</blockquote>
+<p>此外，main方法是Java解释器调用，那时候还未产生任何对象，作为程序的入口，必须提前加载好；[main是一个可以被JVM识别的特殊单词，而不是关键字]<br>    static修饰的类属性可以直接使用，而无需new一个实例化对象去调用；</p>
+<blockquote>
+<p>[可以没有main方法而去执行Java代码]</p>
+</blockquote>
+<h5 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h5><blockquote>
+<p>Java中main函数为何必须使用String[] args形式的不定参数(数组作为参数)？</p>
+</blockquote>
+<p>A: 程序运行时, JVM会首先调用<code>main</code>函数，而<code>main</code>函数传入的是String数组，示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        System.out.println(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 运行输出：[Ljava.lang.String;@21780f30</span></span><br><span class="line"><span class="comment">// 每次运行发现@后的字符串值都不一样!</span></span><br></pre></td></tr></table></figure>
+
+<p>修改输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(args.length);</span><br><span class="line"><span class="comment">// 输出为0，说明传入的实体数组长度为0(实体数组而非null !!!), 相当于传入的是 `new String[0]`</span></span><br></pre></td></tr></table></figure>
+
+<p>尝试输出数组某个值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(args[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+<p>运行，报错 <code>Exception in thread &quot;main&quot; java.lang.ArrayIndexOutOfBoundsException: 0</code>, 越界错误❌. </p>
+<p>说明args这个数组中没有元素啊！！！那JVM传递这个实体数组干什么？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestMain</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;args.length;i++)</span><br><span class="line">            System.out.println(args[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在终端，进入该.java文件所在目录，然后 <code>javac</code> 编译该文件, 产生一个执行的class文件.</p>
+<p>然后，我们使用java命令运行该测试类，并传入参数 1 2 4</p>
+<blockquote>
+<p>如果，该函数在某一个包下，则终端路径需要回退到包目录去执行，类似于</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">javaStudy/src % java javaClassExercise.TestMain 1 2 4</span><br><span class="line"><span class="comment">#输出: </span></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="comment"># 2</span></span><br><span class="line"><span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
+<p>使用<code>java</code>命令调用虚拟机，并手动传入值，调用方式：java 类名 参数。同时，JVM将类后面的这些数据存入了数组！</p>
+<blockquote>
+<p>main方法里面的args的参数原来是接收的java运行参数。</p>
+</blockquote>
+<blockquote>
+<p>可简单认为 – 解释: 按照Java规定入口函数必须这样写，就这么记！！而且参数必须为String类实例化的数组.</p>
+</blockquote>
+<p>关于Java main函数相关解析还可参考博文:</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/146576/why-is-the-java-main-method-static">http://stackoverflow.com/questions/146576/why-is-the-java-main-method-static</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/xwdreamer/archive/2012/04/09/2438845.html">http://www.cnblogs.com/xwdreamer/archive/2012/04/09/2438845.html</a></p>
+</blockquote>
+<h4 id="附-无main函数运行Java代码"><a href="#附-无main函数运行Java代码" class="headerlink" title="附:无main函数运行Java代码"></a>附:无main函数运行Java代码</h4><p> <em><strong>问题：</strong></em></p>
+<blockquote>
+<p>Java程序中, 无main函数作为入口函数, 程序是如何运行的呢？</p>
+</blockquote>
+<p>A:</p>
+<blockquote>
+<p>利用Junit或TestNG 测试框架，以@Test注解在测试方法上的形式 实现无main函数也可以运行Java代码.</p>
+</blockquote>
+<blockquote>
+<p>参考： <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/java/j-cq08296/">http://www.ibm.com/developerworks/cn/java/j-cq08296/</a></p>
+</blockquote>
+<p>创建Maven工程：</p>
+<p><code>pom.xml</code>添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.testng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>testng<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.8.21<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>E.g. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.testng.annotations.Test;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by lomo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">noMainMethod</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我是测试无main函数类中的第一个静态代码块&quot;</span>);</span><br><span class="line"><span class="comment">//        System.exit(0);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test(description = &quot;第一个&quot;, testName = &quot;T1&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;123chendong&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test(description = &quot;第二个测试例子&quot;, testName = &quot;T2&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;test 2&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>光标移动至test 或test2 上右键运行即可成功执行并输出对应结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">我是测试无main函数类中的第一个静态代码块</span><br><span class="line">[TestNG] Running: </span><br><span class="line">123Lomo</span><br><span class="line">===============================================</span><br><span class="line">Default Suite</span><br><span class="line">Total tests run: 1, Failures: 0, Skips: 0</span><br><span class="line">===============================================</span><br></pre></td></tr></table></figure>
+
+
+<p>或直接移动光标至类noMainMethod上运行，执行里面的2条Test并输出结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">我是测试无main函数类中的第一个静态代码块</span><br><span class="line">[TestNG] Running:  </span><br><span class="line">123Lomo</span><br><span class="line">test 2</span><br><span class="line">===============================================</span><br><span class="line">Default Suite</span><br><span class="line">Total tests run: 2, Failures: 0, Skips: 0</span><br><span class="line">===============================================</span><br></pre></td></tr></table></figure>
+
+<h5 id="TestNG运行原理"><a href="#TestNG运行原理" class="headerlink" title="TestNG运行原理?"></a>TestNG运行原理?</h5><blockquote>
+<p>思考🤔: TestNG如何实现Java无main函数运行代码的? </p>
+</blockquote>
+<p>首先简单从<code>@Test</code> 作为入口，找到TestNG的<code>annotations</code>, 或者从测试方法的import包里找到TestNG的annotations包: <code>import org.testng.annotations</code></p>
+<p>可以看到org.testng包里除了annotations包外还有其它包: 断言asserts、log、junit、log4testng、xml…等等的包.</p>
+<p>进入annotations包，发现很多编译好的 <code>.class</code> 文件，找到其中之一<code>Test.class</code>, 双击进入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.testng.annotations;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Test &#123;</span><br><span class="line">    String[] groups() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">enabled</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    String[] parameters() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    String[] dependsOnGroups() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    String[] dependsOnMethods() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="title function_">timeOut</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">0L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="title function_">invocationTimeOut</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">0L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">invocationCount</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">threadPoolSize</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">successPercentage</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">dataProvider</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt; dataProviderClass() <span class="keyword">default</span> Object.class;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">alwaysRun</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">description</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    Class[] expectedExceptions() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">expectedExceptionsMessageRegExp</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;.*&quot;</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">suiteName</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">testName</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">sequential</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">singleThreaded</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    Class <span class="title function_">retryAnalyzer</span><span class="params">()</span> <span class="keyword">default</span> Class.class;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">skipFailedInvocations</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">ignoreMissingDependencies</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">priority</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>分析</strong></p>
+</blockquote>
+<blockquote>
+<p>先粗糙地分析下，<em><strong>待学完Java注解Anonation、反射等之后再深入总结下</strong></em>.</p>
+</blockquote>
+<blockquote>
+<p>根据其import的包是 <code>java.lang.annotation</code>, 就可以断言，TestNG的 @Test模式肯定也是基于Java的注解模式来实现无main函数运行的.</p>
+</blockquote>
+<blockquote>
+<p>接着简单说说Test方法前3行代码:</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Test</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1)Retention， 保留， 表示在什么级别保留此信息</p>
+</blockquote>
+<p><code>SOURCE:源码注解，注解仅存在代码中，注解会被编译器丢弃</code></p>
+<p><code>CLASS:编译时注解，注解会在class文件中保留，但会被JVM丢弃</code></p>
+<p><code>RUNTIME:运行时注解，VM运行期间也会保留该注解，因此**可以通过反射来获得该注解**</code></p>
+<blockquote>
+<p>2)Target，表示作用域，可能的ElementType参数包括：</p>
+</blockquote>
+<p><code>CONSTRUCTOR:构造方法声明</code></p>
+<p><code>FIELD:字段声明</code></p>
+<p><code>LOCAL_VARIABLE:局部变量声明</code></p>
+<p><code>METHOD:方法声明</code></p>
+<p><code>PACKAGE:包声明</code></p>
+<p><code>PARAMETER:参数声明</code></p>
+<p><code>TYPE:类，接口或enum声明</code></p>
+<blockquote>
+<p>Test接口中，提供了很多 <code>@Test</code> 注解使用的属性，<code>@Test</code>标记一个类或方法作为测试的一部分。关于Test接口的详细属性列表参考：</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://testng.org/doc/documentation-main.html#annotations">http://testng.org/doc/documentation-main.html#annotations</a></p>
+</blockquote>
+<p><strong>小结</strong>: TestNG 实现无main函数执行，是基于Java的注解，深究后续继续学习记录笔记.</p>
+<p>Done!</p>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2016/11/11/Java-Class-and-Object/" target="_blank" title="Java Class and Object">Java Class and Object</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/study/">study</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2016/11/11/Java-Class-and-Object/" data-title="Java Class and Object | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/12/06/vertival-align兼容问题/" title="vertival-align兼容问题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  vertival-align兼容问题</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/11/09/linux-install-php-extend/"  title="Linux安装PHP扩展小记">
+ <strong>下一篇：</strong><br/> 
+ <span>Linux安装PHP扩展小记
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">Java类和对象[学习笔记]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">类的创建和初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%88%9B%E5%BB%BA%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">类的创建规则：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%92%8C%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text">构造方法和变量的初始化顺序:</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#static%E4%B8%8E%E9%9D%9Estatic%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">static与非static区别</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA-new-%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.4.</span> <span class="toc-text">对象创建(new)过程总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%E3%80%812-%E7%AD%94%E6%A1%88"><span class="toc-number">1.3.5.</span> <span class="toc-text">问题1、2 答案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Q1"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Q1</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Q2"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Q2</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%84-%E6%97%A0main%E5%87%BD%E6%95%B0%E8%BF%90%E8%A1%8CJava%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.6.</span> <span class="toc-text">附:无main函数运行Java代码</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#TestNG%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">TestNG运行原理?</span></a></li></ol></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

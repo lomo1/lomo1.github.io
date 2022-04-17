@@ -1,0 +1,781 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>options request | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="前端跨域与options请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="options request">
+<meta property="og:url" content="http://lomo.space/2016/08/24/options-request/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="前端跨域与options请求">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-08-24T03:47:26.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.885Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="cors">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/24/options-request/" title="options request" itemprop="url">options request</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-24T03:47:26.000Z" itemprop="datePublished"> Published 2016-08-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E4%B8%8Ehttp%E8%AF%B7%E6%B1%82%E4%B9%8Boptions"><span class="toc-number">1.</span> <span class="toc-text">跨域与http请求之options</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F-x2F-%E8%B7%A8%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text">跨域&#x2F;跨源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E7%89%B9%E7%82%B9-x2F-%E9%80%A0%E6%88%90%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">跨域特点&#x2F;造成的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.2.</span> <span class="toc-text">跨域解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSONP%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">JSONP解决跨域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CORS%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">CORS解决跨域</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#restful-API"><span class="toc-number">1.1.3.</span> <span class="toc-text">restful API</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="跨域与http请求之options"><a href="#跨域与http请求之options" class="headerlink" title="跨域与http请求之options"></a>跨域与http请求之options</h2><h3 id="跨域-x2F-跨源"><a href="#跨域-x2F-跨源" class="headerlink" title="跨域&#x2F;跨源"></a>跨域&#x2F;跨源</h3><blockquote>
+<p>起始</p>
+</blockquote>
+<p>同源策略：</p>
+<blockquote>
+<p>Same Origin Policy, 同源策略是一种约定，是浏览器最核心、最新基本的安全功能。Web是构建在同源策略基础之上，而浏览器是针对同源策略的一种实现。【From <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/3927875?fr=aladdin">百科</a>】</p>
+</blockquote>
+<blockquote>
+<p>同源策略也是一种同来隔离潜在恶意文件的一种关键的安全机制. 【From <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">MDN</a>】</p>
+</blockquote>
+<p>同源&#x2F;同域：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">•协议相同</span><br><span class="line">•端口相同</span><br><span class="line">•域名相同</span><br></pre></td></tr></table></figure>
+
+<p>其它的可能存在嵌入跨域资源的 <code>HTML</code> 标签：</p>
+<table>
+<thead>
+<tr>
+<th align="left">标签🏷</th>
+<th align="right">示例</th>
+<th align="right">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">script</td>
+<td align="right">script src&#x3D;”…”&gt;</script></td>
+<td align="right">标签嵌入跨域脚本。语法错误信息只能在同源脚本中捕捉到</td>
+</tr>
+<tr>
+<td align="left">link</td>
+<td align="right">link rel&#x3D;”stylesheet” href&#x3D;”…”&gt;</td>
+<td align="right">标签嵌入CSS。由于CSS的松散的语法规则，CSS的跨域需要一个设置正确的Content-Type消息头</td>
+</tr>
+<tr>
+<td align="left">img</td>
+<td align="right">img src&#x3D;”….”&gt;</td>
+<td align="right">支持的图片格式包括PNG,JPEG,GIF,BMP,SVG,…</td>
+</tr>
+<tr>
+<td align="left">video&#x2F;audio</td>
+<td align="right">video src&#x3D;”….” &#x2F;&gt;</td>
+<td align="right">多媒体资源</td>
+</tr>
+<tr>
+<td align="left">object&#x2F;embed&#x2F;applet</td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td align="left">frame&#x2F;iframe</td>
+<td align="right">frame src&#x3D;”…”&gt;</frame></td>
+<td align="right">站点可以使用X-Frame-Options消息头来阻止这种形式的跨域交互</td>
+</tr>
+</tbody></table>
+<p>因为 <code>同源策略</code> 的原因，通常情况下，浏览器端进行 <code>Ajax</code> 请求时只能进行同源请求(即：当前域下的Ajax请求只能请求当前域对应的后端接口&#x2F;资源)</p>
+<h4 id="跨域特点-x2F-造成的问题"><a href="#跨域特点-x2F-造成的问题" class="headerlink" title="跨域特点&#x2F;造成的问题"></a>跨域特点&#x2F;造成的问题</h4><p>通常跨域会有一下特点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">•跨域是浏览器同源策略限制，所以在浏览器之外是没有跨域问题的，所以有时候我们用Charles等抓包工具能够看到返回，但实际上是有跨越问题的;</span><br><span class="line"></span><br><span class="line">• 表单(form)提交是没有跨域限制的;</span><br><span class="line"></span><br><span class="line">•跨域导致Cookie、LocalStorage 和 IndexDB 无法读取；DOM无法获得；AJAX无法成功请求等; [存储在浏览器中的数据，如localStorage和IndexedDB，以源进行分割。每个源都拥有自己单独的存储空间，一个源中的Javascript脚本不能对属于其它源的数据进行读写操作]</span><br><span class="line">跨域并非浏览器限制了发起跨站请求，而是跨站请求可以正常发起，但是返回结果被浏览器拦截(通常在打开开发者模式下的控制台可以看到 xxx origin not allowed ...这类红色error 信息)。当然也有些特例，有些浏览器不允许从HTTPS的域跨域访问HTTP，</span><br></pre></td></tr></table></figure>
+
+<h4 id="跨域解决方案"><a href="#跨域解决方案" class="headerlink" title="跨域解决方案"></a>跨域解决方案</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">•JSONP</span><br><span class="line">•CORS</span><br><span class="line"></span><br><span class="line">•window.name</span><br><span class="line">•document.domain</span><br><span class="line">•location.hash</span><br><span class="line">•window.postMessage</span><br><span class="line">•flash</span><br></pre></td></tr></table></figure>
+
+<p>最常用的就前2中 <code>JSONP</code> 和 <code>CORS</code> 了。</p>
+<h5 id="JSONP解决跨域"><a href="#JSONP解决跨域" class="headerlink" title="JSONP解决跨域"></a>JSONP解决跨域</h5><p>作用： 实现跨域读取数据。</p>
+<p><code>JSONP</code>的全英文：<code>JSON with Padding</code>,  单次<code>padding</code>的中译文：衬垫、衬料；废话；赘语。 在此处直译为 衬垫比较接近其本意，那么就可以译为：一个附加性的、陪衬性的JSON。</p>
+<p>一般情况下，我们在自己的项目中引用其他的、第三方的或是CDN上的JS等脚本资源时不会存在跨域(源)问题，可以自由加载并执行不同域名下的脚本。</p>
+<p>前端</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>JSONP<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;divCustomers&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">callbackFunction</span>(<span class="params">result</span>)</span></span><br><span class="line"><span class="language-javascript">                &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">var</span> html = <span class="string">&#x27;&lt;ul&gt;&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; result.<span class="property">length</span>; i++)</span></span><br><span class="line"><span class="language-javascript">                    &#123;</span></span><br><span class="line"><span class="language-javascript">                        html += <span class="string">&#x27;&lt;li&gt;&#x27;</span> + result[i] + <span class="string">&#x27;&lt;/li&gt;&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                    &#125;</span></span><br><span class="line"><span class="language-javascript">                    html += <span class="string">&#x27;&lt;/ul&gt;&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;divCustomers&#x27;</span>).<span class="property">innerHTML</span> = html;</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;http://www.xxx/xxx/xx/jsonp.php?jsoncallback=callbackFunction&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>http://www.xxx/xxx/xx/jsonp.php?jsoncallback=callbackFunction</code> 返回数据</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">callbackFunction(<span class="punctuation">[</span><span class="string">&quot;customername1&quot;</span><span class="punctuation">,</span><span class="string">&quot;customername2&quot;</span><span class="punctuation">]</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在前端页面里首先预定义了一个函数名为： <code>callbackFunction</code>, 当加载脚本<code>\&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.xxx/xxx/xx/jsonp.php?jsoncallback=callbackFunction&quot;&gt;&lt;/script&gt;</code>完成后，返回的就是如上数据，那么此时我们预定义的这个函数 <code>callbackFunction</code> 就会被调用，同时返回的数据 <code>[&quot;customername1&quot;,&quot;customername2&quot;]</code> 被当做这个函数的参数传入并执行该函数。</p>
+<p>浏览器执行 脚本 <code>\&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.xxx/xxx/xx/jsonp.php?jsoncallback=callbackFunction&quot;&gt;&lt;/script&gt;</code> 时回去请求这个资源并向后台传递了一个参数 <code>jsoncallback</code> 其value为 <code>callbackFunction</code>。</p>
+<p>假设后端为PHP</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-type: application/json&#x27;</span>);</span><br><span class="line">    <span class="comment">//获取回调函数名 -&gt; callbackFunction</span></span><br><span class="line">    <span class="variable">$jsoncallback</span> = <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$_REQUEST</span> [<span class="string">&#x27;jsoncallback&#x27;</span>]);</span><br><span class="line">    <span class="comment">//返回给客户端的 json数据</span></span><br><span class="line">    <span class="variable">$json_data</span> = <span class="string">&#x27;[&quot;customername1&quot;,&quot;customername2&quot;]&#x27;</span>;</span><br><span class="line">    <span class="comment">//输出jsonp格式的数据</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$jsoncallback</span> . <span class="string">&quot;(&quot;</span> . <span class="title function_ invoke__">json_encode</span>(<span class="variable">$json_data</span>) . <span class="string">&quot;)&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样浏览器执行 <code>script</code> 脚本完毕后就可以获取到响应的数据，然后去渲染等.</p>
+<blockquote>
+<p>使用JSONP模式的重要前提： 前后端要 <strong>事先约定好</strong> 包裹的函数名即callback名称; 且JSON的请求方式只能为 <strong>GET</strong> 请求; 同时若不对传递的包裹函数变量jsoncallback进行转义的话是很容易造成XSS攻击</p>
+</blockquote>
+<h5 id="CORS解决跨域"><a href="#CORS解决跨域" class="headerlink" title="CORS解决跨域"></a>CORS解决跨域</h5><blockquote>
+<p>CORS是一个W3C标准，全称是”跨域资源共享”（Cross-origin resource sharing）；允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p>
+</blockquote>
+<p>详细参考：</p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/04/cors.html">http://www.ruanyifeng.com/blog/2016/04/cors.html</a></p>
+<h4 id="restful-API"><a href="#restful-API" class="headerlink" title="restful API"></a>restful API</h4><p>通常有 <code>PUT</code> <code>GET</code> <code>POST</code> <code>DELETE</code> <code>HEAD</code> <code>OPTIONS</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">REST中又提出了几种其它类型的请求方式，汇总起来有六种：GET、POST、PUT、DELETE、HEAD、OPTIONS。</span><br><span class="line"></span><br><span class="line">前四种，正好与CRUD操作对应：GET（查）、POST（增）、PUT（改）、DELETE（删）.</span><br><span class="line"></span><br><span class="line">GET : 从服务器取出资源（一项或多项）</span><br><span class="line">POST：在服务器新建一个资源</span><br><span class="line">PUT：在服务器更新资源（客户端提供完整资源数据）</span><br><span class="line">DELETE：从服务器删除资源</span><br><span class="line">HEAD : 从服务器获取报头信息（不是资源）</span><br><span class="line"></span><br><span class="line">GET、HEAD和OPTIONS均被认为是安全的方法，而PUT、POST、DELETE等请求都是不安全的（会修改数据).</span><br></pre></td></tr></table></figure>
+
+<p>说说其中的<code>options</code> 请求：</p>
+<p>服务器端已支持跨域请求，但是浏览器端进行跨域请求时，会首先发出options请求，服务端会返回相应的response并并告诉浏览器是否允许跨域请求(access-control-allow-origin头为*或者和当前域名一致的话，才会进入第二段的真正请求)，允许，那浏览器就接着进行请求，否则就抛出错误(xxx. Xmlhttprequest not allowed 。。。。)</p>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2016/08/24/options-request/" target="_blank" title="options request">options request</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/essay/">essay</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/js/">js</a><a href="/tags/cors/">cors</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2016/08/24/options-request/" data-title="options request | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/09/21/nginx日志按照每天进行拆分写入/" title="nginx日志按照每天进行拆分写入">
+  <strong>上一篇：</strong><br/>
+  <span>
+  nginx日志按照每天进行拆分写入</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/08/03/MySQL-restore-autoincrement-id/"  title="MySQL restore autoincrement id">
+ <strong>下一篇：</strong><br/> 
+ <span>MySQL restore autoincrement id
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E4%B8%8Ehttp%E8%AF%B7%E6%B1%82%E4%B9%8Boptions"><span class="toc-number">1.</span> <span class="toc-text">跨域与http请求之options</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F-x2F-%E8%B7%A8%E6%BA%90"><span class="toc-number">1.1.</span> <span class="toc-text">跨域&#x2F;跨源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E7%89%B9%E7%82%B9-x2F-%E9%80%A0%E6%88%90%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">跨域特点&#x2F;造成的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.2.</span> <span class="toc-text">跨域解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JSONP%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">JSONP解决跨域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CORS%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">CORS解决跨域</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#restful-API"><span class="toc-number">1.1.3.</span> <span class="toc-text">restful API</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,716 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>messy code in MySQL on Linux by chinese | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="Linux上MySQL v5.7.16插入中文乱码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="messy code in MySQL on Linux by chinese">
+<meta property="og:url" content="http://lomo.space/2017/05/17/messy-code-in-MySQL-on-Linux-by-chinese/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="Linux上MySQL v5.7.16插入中文乱码">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-17T03:17:06.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.884Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/05/17/messy-code-in-MySQL-on-Linux-by-chinese/" title="messy code in MySQL on Linux by chinese" itemprop="url">messy code in MySQL on Linux by chinese</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-17T03:17:06.000Z" itemprop="datePublished"> Published 2017-05-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">MySQL字符编码问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%98%E7%94%B1"><span class="toc-number">1.1.</span> <span class="toc-text">缘由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5MySQL%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6my-cnf"><span class="toc-number">1.2.1.</span> <span class="toc-text">检查MySQL配置文件my.cnf</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%93%BE%E6%8E%A5%E5%B1%82%E5%AD%97%E7%AC%A6"><span class="toc-number">1.2.2.</span> <span class="toc-text">修改链接层字符</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="MySQL字符编码问题"><a href="#MySQL字符编码问题" class="headerlink" title="MySQL字符编码问题"></a>MySQL字符编码问题</h2><h3 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h3><blockquote>
+<p>本地开发环境下数据库MySQL中插入中英文插入、读取都ok，无论是MySQL控制台下插入、读取还是借助第三方<code>GUI</code>工具都是ok的，但是部署到线上Linux机器后插入MySQL后，查看中文部分是乱码。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#development enviroment</span></span><br><span class="line">PHP Version 7.0.15</span><br><span class="line">MySQL 5.7.16</span><br><span class="line">Apache 2.0 Handler</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#online environment</span></span><br><span class="line">PHP Version 7.0.19</span><br><span class="line">Apache 2.0 + Nginx 1.10</span><br><span class="line">MySQL 5.7.16</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>MySQL相关封装</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#mysqlhelper.class.php</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Class mysqlHelper</span></span><br><span class="line"><span class="comment"> * Author: Lomo</span></span><br><span class="line"><span class="comment"> * Email: lomo<span class="doctag">@lomo</span>.space</span></span><br><span class="line"><span class="comment"> * URL: http://lomo.space</span></span><br><span class="line"><span class="comment"> * Date: 2017-05</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="keyword">include_once</span> <span class="string">&#x27;sql.interface.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mysqlHelper</span> <span class="keyword">implements</span> <span class="title">ISQLHelper</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$host</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$userName</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$passWord</span>;</span><br><span class="line">    <span class="comment">//private $defaultDB;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$conn</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * SqlHelper constructor.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $host</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $userName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $passWord</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$host</span>, <span class="variable">$userName</span>, <span class="variable">$passWord</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;host = <span class="variable">$host</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;userName = <span class="variable">$userName</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;passWord = <span class="variable">$passWord</span>;</span><br><span class="line">        <span class="comment">//$this-&gt;dbName = $defaultDB;</span></span><br><span class="line">        <span class="variable language_">$this</span>-&gt;conn = <span class="keyword">new</span> <span class="title function_ invoke__">mysqli</span>(<span class="variable">$this</span>-&gt;host, <span class="variable">$this</span>-&gt;userName, <span class="variable">$this</span>-&gt;passWord) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">&quot;Fail to Connect MySQL Server&quot;</span>.<span class="title function_ invoke__">mysqli_error</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $db</span></span><br><span class="line"><span class="comment">     *  switch DataBase</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> new $conn</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_selectDB</span>(<span class="params"><span class="variable">$db</span></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">mysqli_select_db</span>(<span class="variable">$this</span>-&gt;conn, <span class="variable">$db</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $sql</span></span><br><span class="line"><span class="comment">     * DQL - 执行SQL查询</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> object $res</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * $res-&gt;num_rows; 返回查询结果集行数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_query</span>(<span class="params"><span class="variable">$sql</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$this</span>-&gt;conn, <span class="variable">$sql</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是否查询有结果, 有则返回TRUE,反之FALSE</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $sql</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> bool</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">isExistData</span>(<span class="params"><span class="variable">$sql</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">_query</span>(<span class="variable">$sql</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$result</span>-&gt;num_rows &gt;= <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $sql</span></span><br><span class="line"><span class="comment">     * DQL - 查询并返回关联数组形式的查询结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">execute_dql2</span>(<span class="params"><span class="variable">$sql</span></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$arr</span> = <span class="keyword">array</span>();</span><br><span class="line">        <span class="variable">$i</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="variable">$res</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$this</span>-&gt;conn, <span class="variable">$sql</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$this</span>-&gt;conn));</span><br><span class="line">        <span class="keyword">while</span> (<span class="variable">$row</span> = <span class="title function_ invoke__">mysqli_fetch_assoc</span>(<span class="variable">$res</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="variable">$arr</span>[<span class="variable">$i</span>++]=<span class="variable">$row</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">mysqli_free_result</span>(<span class="variable">$res</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$arr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $sql</span></span><br><span class="line"><span class="comment">     * DML - 数据操作</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> int</span></span><br><span class="line"><span class="comment">     * 0 //操作失败</span></span><br><span class="line"><span class="comment">     * 1 //操作成功, 数据表受到影响</span></span><br><span class="line"><span class="comment">     * 2 //操作成功, 但是未修改任何数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">execute_dml</span>(<span class="params"><span class="variable">$sql</span></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$r</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$this</span>-&gt;conn, <span class="variable">$sql</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">$r</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="title function_ invoke__">mysqli_affected_rows</span>(<span class="variable">$this</span>-&gt;conn) &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * close connect</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">close_connect</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable language_">$this</span>-&gt;conn))&#123;</span><br><span class="line">            <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$this</span>-&gt;conn);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>本地run脚本插入读取带有中文的数据一切OK，本地run 链接远程数据库时，插入读取中文相关也ok。当把脚本放在online机器时就产生了乱码问题。</p>
+<h4 id="检查MySQL配置文件my-cnf"><a href="#检查MySQL配置文件my-cnf" class="headerlink" title="检查MySQL配置文件my.cnf"></a>检查MySQL配置文件<code>my.cnf</code></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set=utf8</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8</span><br><span class="line">[mysqld]</span><br><span class="line">collation-server=utf8_unicode_ci</span><br><span class="line">init-connect=<span class="string">&#x27;SET NAMES utf8&#x27;</span></span><br><span class="line">character-set-server=utf8</span><br></pre></td></tr></table></figure>
+
+<p>配置文件ok。</p>
+<h4 id="修改链接层字符"><a href="#修改链接层字符" class="headerlink" title="修改链接层字符"></a>修改链接层字符</h4><p><code>mysqli_query(&quot;set names utf8&quot;);</code><br>尝试无果。</p>
+<p>Bing搜索🔍查询，有一个PHP针对MySQL连接层字符编码设置 <code>mysqli_set_charset($link, );</code> [PHP官方推荐使用！]</p>
+<p>源码定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PHP 5 &gt;= 5.0.5, PHP 7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sets the default client character set</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@link</span> http://php.net/manual/en/mysqli.set-charset.php</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> mysqli $link A link identifier returned by mysqli_connect() or mysqli_init()</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> string $charset</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> bool</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mysqli_set_charset</span> (<span class="params"><span class="variable">$link</span>, <span class="variable">$charset</span></span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>通过在连接层设置字符编码为<code>utf8</code>即可解决。</p>
+<p><code>mysqli_set_charset($this-&gt;conn, &quot;utf8&quot;);</code>。</p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/26596294/set-names-vs-mysqli-set-charset-besides-affecting-mysqli-escape-string-are">https://stackoverflow.com/questions/26596294/set-names-vs-mysqli-set-charset-besides-affecting-mysqli-escape-string-are</a></p>
+</blockquote>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2017/05/17/messy-code-in-MySQL-on-Linux-by-chinese/" target="_blank" title="messy code in MySQL on Linux by chinese">messy code in MySQL on Linux by chinese</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/study/">study</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/PHP/">PHP</a><a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2017/05/17/messy-code-in-MySQL-on-Linux-by-chinese/" data-title="messy code in MySQL on Linux by chinese | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/18/highcharts-plotOptions-issue/" title="highcharts plotOptions issue">
+  <strong>上一篇：</strong><br/>
+  <span>
+  highcharts plotOptions issue</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/05/10/WebDriver-maxsize-Chrome-window/"  title="WebDriver maxsize Chrome window">
+ <strong>下一篇：</strong><br/> 
+ <span>WebDriver maxsize Chrome window
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">MySQL字符编码问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%98%E7%94%B1"><span class="toc-number">1.1.</span> <span class="toc-text">缘由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5MySQL%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6my-cnf"><span class="toc-number">1.2.1.</span> <span class="toc-text">检查MySQL配置文件my.cnf</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%93%BE%E6%8E%A5%E5%B1%82%E5%AD%97%E7%AC%A6"><span class="toc-number">1.2.2.</span> <span class="toc-text">修改链接层字符</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

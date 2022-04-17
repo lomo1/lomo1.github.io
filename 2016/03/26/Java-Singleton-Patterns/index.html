@@ -1,0 +1,750 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java Singleton Patterns | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="Java设计模式之单例模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Singleton Patterns">
+<meta property="og:url" content="http://lomo.space/2016/03/26/Java-Singleton-Patterns/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="Java设计模式之单例模式">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-03-26T11:00:37.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.871Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="DesignPatterns">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/26/Java-Singleton-Patterns/" title="Java Singleton Patterns" itemprop="url">Java Singleton Patterns</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-26T11:00:37.000Z" itemprop="datePublished"> Published 2016-03-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">Java设计模式之单例模式[笔记]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.4.</span> <span class="toc-text">实际项目分析</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="Java设计模式之单例模式-笔记"><a href="#Java设计模式之单例模式-笔记" class="headerlink" title="Java设计模式之单例模式[笔记]"></a>Java设计模式之单例模式[笔记]</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>一个类有且仅有一个实例，并且自行实例化向整个系统提供实例调用。</p>
+<blockquote>
+<p>在应用中，单例模式可以使得单例对象保存在JVM中，该对象只有一个实例存在。</p>
+</blockquote>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><pre><code>1. 某些类创建频繁(对于大型对象如果每次都去new对象，将会增大系统开销)
+2.省去new操作符，降低内存使用频率，减轻GC(垃圾回收)的压力
+3.保证核心功能实例对象可以控制整个系统流程
+</code></pre>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><blockquote>
+<p>One</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javaClassExercise.designPatterns.singleton;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by lomo.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 单例模式</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="comment">/* 私有静态变量instance, 防止被引用; instance变量在此处赋值为null, 实现延迟加载 -- 有的类比较大 延迟加载提升性能*/</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 定义私有类型的构造函数(默认为public级别)， 可以防止被实例化new*/</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*public访问级别、静态static类型的返回类型为Singleton引用类型的getInstance方法； getInstance方法作用：获取本类实例*/</span></span><br><span class="line"><span class="comment">//    public static Singleton getInstance() &#123;</span></span><br><span class="line"><span class="comment">//        if (instance == null) &#123;</span></span><br><span class="line"><span class="comment">//            return new Singleton();</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//        return instance;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    <span class="comment">//第一次改进后的：</span></span><br><span class="line">    <span class="comment">//加了synchronized关键字保证了同步性，只需要在创建时上一次锁，(也避免每次调用该方法时对调用对象上锁)</span></span><br><span class="line">    <span class="comment">//此时，调用的时候是不需要加锁，当instance为null，并创建对象时才需要加锁，</span></span><br><span class="line">    <span class="comment">//问题：此时还是存在问题，当2个线程同时需要调用该方法时，第一个线程访问后，在内存里创建了实例对象，</span></span><br><span class="line">    <span class="comment">// 但是由于JVM的一些优化机制，导致线程2调用Singleton实例时，发现Singleton未被实例，获取不到内存中保存的实例对象，就会报错</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">readResolve</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//    public static void main(String... args) &#123;</span></span><br><span class="line"><span class="comment">//        System.out.print(Singleton.getInstance().hashCode());</span></span><br><span class="line"><span class="comment">//        System.out.println(instance); //null</span></span><br><span class="line"><span class="comment">//        System.out.println(instance instanceof Singleton); // false</span></span><br><span class="line"><span class="comment">//        Singleton singleton = new Singleton(); //Exception in thread &quot;main&quot; java.lang.NullPointerException, 空指针异常</span></span><br><span class="line"><span class="comment">//        Singleton singleton1 = new  Singleton();</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当多个线程同时调用该单例类的方法时，对于无保护的这种类，如何改进避免出现异常问题？</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Two<br>使用一个内部类来维护、创建单例类的实例</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javaClassExercise.designPatterns.singleton;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by lomo .</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 对Singleton类升级 -&gt; 一个完整的单例类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CompleteSingleton</span> &#123;</span><br><span class="line">    <span class="comment">/* 定义私有类型的构造函数(默认为public级别)， 可以防止被实例化new*/</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">CompleteSingleton</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 使用一个内部类来专门维护单例类 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonFactory</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">CompleteSingleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CompleteSingleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 获取单例类的实例 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> CompleteSingleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonFactory.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 如果该对象被用于序列化，可以保证对象在序列化前后保持一致 */</span></span><br><span class="line">    <span class="comment">/* 序列化：就是讲Java对象转换为字节序列的过程 */</span></span><br><span class="line">    <span class="comment">/* 序列化作用：将Java对象序列化成字节 然后保存于磁盘 或用于在网络传送字节 */</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">readResove</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Three<br>使用synchronized关键字，提供一个单例类实例创建的方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javaClassExercise.designPatterns.singleton;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by lomo.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonTest</span> &#123;</span><br><span class="line">    <span class="comment">/* 私有静态变量instance, 防止被引用; instance变量在此处赋值为null, 实现延迟加载 -- 有的类比较大 延迟加载提升性能*/</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">SingletonTest</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 私有构造函数，防止被new实例化 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonTest</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* syncInit方法用来初始化单例类实例(限于单例内的内部) */</span></span><br><span class="line">    <span class="comment">// 同步性，synchronized关键字锁定的是对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">syncInit</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">SingletonTest</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* public级别的可供外部内访问的方法，用来获取单例类实例对象 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonTest <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            syncInit();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>第二种和第三种大同小异，视情况选择.</p>
+</blockquote>
+<h3 id="实际项目分析"><a href="#实际项目分析" class="headerlink" title="实际项目分析"></a>实际项目分析</h3><blockquote>
+<p>公司内部项目代码简单分析</p>
+</blockquote>
+<p><code>一条测试case</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FinancialServicePageClickTest</span> <span class="keyword">extends</span> <span class="title class_">AbstractTestCases</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test(testName = &quot;xx001&quot;, description = &quot;xxxx&quot;, groups = &quot;pc&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">ClickJiuDingInvestmentTest</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">NavigationPage</span> <span class="variable">navigationPage</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NavigationPage</span>(driver);</span><br><span class="line">        <span class="type">EnterprisePCPage</span> <span class="variable">enterprisePCPage</span> <span class="operator">=</span> navigationPage.clickEnterpriseLink();</span><br><span class="line">        <span class="type">FinancialServicePCPage</span> <span class="variable">financialServicePCPage</span> <span class="operator">=</span> enterprisePCPage.clickFinancialServiceLink();</span><br><span class="line">        financialServicePCPage.GoToJiuDingInvestment();</span><br><span class="line">        WebReporter.log(driver, driver.getTitle(), <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试子类<code>FinancialServicePageClickTest</code>继承自<code>AbstractTestCases</code>类，父类AbstractTestCases实现了针对APP、PC端的driver的初始化(在执行具体的测试方法前就为测试类中的方法准备好必须的driver)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//testng自定义的监听器</span></span><br><span class="line"><span class="meta">@Listeners(&#123; filter.MethodSelector.class &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AbstractTestCases</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> WebDriver driver;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AppiumDriver appiumDirver;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Init driver</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@BeforeMethod</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">initDriver</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">switch</span> (ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;deviceType&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;pc&quot;</span>:</span><br><span class="line">            driver = DriverFactory.createNewDriver();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;phone&quot;</span>:</span><br><span class="line">            appiumDirver = DriverFactory.createAppiumDriver();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Destory driver</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@AfterMethod</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destoryDriver</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> (ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;deviceType&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;phone&quot;</span>:</span><br><span class="line">            WebReporter.log(appiumDirver, <span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">            DriverFactory.closeAppiumDriver();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;pc&quot;</span>:</span><br><span class="line">            WebReporter.log(driver, driver.getTitle(), <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">            DriverFactory.CloseDriver();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * log message to TestNG result</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> str</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">logMessage</span><span class="params">(String str)</span> &#123;</span><br><span class="line">        Reporter.log(str, <span class="number">5</span>, <span class="literal">true</span>); <span class="comment">// Making a log entry.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于TestNG的<code>@Listeners</code>注解：</p>
+</blockquote>
+<p>看TestNG这个注解的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.testng.annotations;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.annotation.ElementType.TYPE;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.testng.IAnnotationTransformer;</span><br><span class="line"><span class="keyword">import</span> org.testng.IAnnotationTransformer2;</span><br><span class="line"><span class="keyword">import</span> org.testng.ITestNGListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This annotation lets you define listeners directly on a test class</span></span><br><span class="line"><span class="comment"> * instead of doing so in your testng.xml.  Any class that implements</span></span><br><span class="line"><span class="comment"> * the interface &#123;<span class="doctag">@link</span> org.testng.ITestNGListener&#125; is allowed,</span></span><br><span class="line"><span class="comment"> * except &#123;<span class="doctag">@link</span> IAnnotationTransformer&#125; and &#123;<span class="doctag">@link</span> IAnnoationTransformer2&#125;,</span></span><br><span class="line"><span class="comment"> * which need to be defined in XML since they have to be known before we even</span></span><br><span class="line"><span class="comment"> * start looking for annotations.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Note that listeners specified this way are global to your entire suite, just</span></span><br><span class="line"><span class="comment"> * like listeners specified in testng.xml.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Cedric Beust, Mar 26, 2010</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;TYPE&#125;)</span></span><br><span class="line"><span class="comment">//TestNG的自定义注解</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Listeners &#123;</span><br><span class="line">  Class&lt;? <span class="keyword">extends</span> <span class="title class_">ITestNGListener</span>&gt;[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于TestNG此注解的详细，可<a target="_blank" rel="noopener" href="http://testng.org/doc/documentation-main.html#testng-listeners">点我查看</a></p>
+</blockquote>
+<blockquote>
+<p>关于 TestNG 的详细使用教程, 可参考这篇全英文教程, 很详细. <a target="_blank" rel="noopener" href="https://www.guru99.com/all-about-testng-and-selenium.html">点我</a></p>
+</blockquote>
+<p><code>DriverFactory</code>类：</p>
+<blockquote>
+<p>使用单例的设计模式实现对driver的初始化，使得在case运行过程中，都保障其操作都是一个driver实例.</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DriverFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">WebDriver</span> <span class="variable">driver</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AppiumDriver</span> <span class="variable">appiumDriver</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Logger</span> <span class="variable">log</span> <span class="operator">=</span> LogFactory.getLogger(DriverFactory.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ConfigUtil</span> <span class="variable">configUtil</span> <span class="operator">=</span> ConfigUtil.getConfigUtil();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">osType</span> <span class="operator">=</span> System.getProperty(<span class="string">&quot;os.name&quot;</span>).toLowerCase();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定义一个private访问级别的构造函数，防止被实例化new对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">DriverFactory</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * create method to get OS type and auto choose the driver for it</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isMacOS</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> osType.indexOf(<span class="string">&quot;mac&quot;</span>) &gt;= <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isWindows</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> osType.indexOf(<span class="string">&quot;window&quot;</span>) &gt;= <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Create a new driver for FF,CHROME,IE</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> WebDriver that you want style</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> WebDriver <span class="title function_">CreateBroswerDriver</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">if</span> (configUtil.getConfigFileContent(<span class="string">&quot;isRemoteDriver&quot;</span>).equals(<span class="string">&quot;false&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">switch</span> (configUtil.getConfigFileContent(<span class="string">&quot;broswerType&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;firefox&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FirefoxDriver</span>(switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;chrome&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ChromeDriver</span>(switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;ie&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">InternetExplorerDriver</span>(switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;safari&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SafariDriver</span>(switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> driver;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">URL</span> <span class="variable">remoteUrl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(configUtil.getConfigFileContent(<span class="string">&quot;remoteDriverURL&quot;</span>));</span><br><span class="line">            <span class="keyword">switch</span> (configUtil.getConfigFileContent(<span class="string">&quot;broswerType&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;firefox&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RemoteWebDriver</span>(remoteUrl, switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;chrome&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RemoteWebDriver</span>(remoteUrl, switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;ie&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RemoteWebDriver</span>(remoteUrl, switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;safari&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RemoteWebDriver</span>(remoteUrl, switchLocalDriverPath());</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> driver;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//单例模式创建驱动Driver</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> WebDriver <span class="title function_">createNewDriver</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        log.info(<span class="string">&quot;Current Driver is null : &quot;</span> + (driver == <span class="literal">null</span>));</span><br><span class="line">        <span class="keyword">if</span> (driver == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (WebDriver.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (driver == <span class="literal">null</span>) &#123;</span><br><span class="line">                    driver = CreateBroswerDriver();</span><br><span class="line">                    setUpDriverSize(driver).get(configUtil.getConfigFileContent(<span class="string">&quot;defaultURL&quot;</span>));</span><br><span class="line">                    <span class="keyword">return</span> driver;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> driver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//提供一个获取Driver实例的方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> WebDriver <span class="title function_">getCurrentDriver</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> createNewDriver();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Create a new Appium driver for iOS,Android</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Appium drive that you want style</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AppiumDriver <span class="title function_">createAppiumDriver</span><span class="params">()</span> <span class="keyword">throws</span> MalformedURLException &#123;</span><br><span class="line">        log.info(<span class="string">&quot;Current Driver is null : &quot;</span> + (appiumDriver == <span class="literal">null</span>));</span><br><span class="line">        <span class="keyword">if</span> (appiumDriver == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (AppiumDriver.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (appiumDriver == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="type">DesiredCapabilities</span> <span class="variable">capabilities</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DesiredCapabilities</span>();</span><br><span class="line">                    capabilities.setCapability(<span class="string">&quot;platformName&quot;</span>,</span><br><span class="line">                            ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;phonePlatform&quot;</span>));</span><br><span class="line">                    capabilities.setCapability(<span class="string">&quot;platformVersion&quot;</span>,</span><br><span class="line">                            ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;platformVersion&quot;</span>));</span><br><span class="line">                    capabilities.setCapability(<span class="string">&quot;deviceName&quot;</span>,</span><br><span class="line">                            ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;deviceName&quot;</span>));</span><br><span class="line">                    capabilities.setCapability(<span class="string">&quot;app&quot;</span>,</span><br><span class="line">                            ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;applactionLocation&quot;</span>));</span><br><span class="line">                    <span class="keyword">if</span> (ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;phonePlatform&quot;</span>).equals(<span class="string">&quot;iOS&quot;</span>)) &#123;</span><br><span class="line">                        capabilities.setCapability(<span class="string">&quot;autoAcceptAlerts&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">                        appiumDriver = <span class="keyword">new</span> <span class="title class_">IOSDriver</span>(</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">URL</span>(ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;appiumDriverURL&quot;</span>)),</span><br><span class="line">                                capabilities);</span><br><span class="line">                    &#125; <span class="keyword">else</span></span><br><span class="line">                        appiumDriver = <span class="keyword">new</span> <span class="title class_">AndroidDriver</span>(</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">URL</span>(ConfigUtil.getConfigUtil().getConfigFileContent(<span class="string">&quot;appiumDriverURL&quot;</span>)),</span><br><span class="line">                                capabilities);</span><br><span class="line">                    <span class="keyword">return</span> appiumDriver;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> appiumDriver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//略去...</span></span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">    <span class="comment">//一些其它方法.....</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Close broswer driver</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">CloseDriver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        driver.quit();</span><br><span class="line">        driver = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Close appium driver</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">closeAppiumDriver</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        appiumDriver.quit();</span><br><span class="line">        appiumDriver = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在DriverFactory类中，分别实现了对PC Driver的初始化和对APP端包括iOS、Android的Driver初始化，其可以进一步使用抽象工厂设计模式，将其进一步优化.</p>
+</blockquote>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2016/03/26/Java-Singleton-Patterns/" target="_blank" title="Java Singleton Patterns">Java Singleton Patterns</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/study/">study</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/DesignPatterns/">DesignPatterns</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2016/03/26/Java-Singleton-Patterns/" data-title="Java Singleton Patterns | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/03/30/js-count-length/" title="js count length">
+  <strong>上一篇：</strong><br/>
+  <span>
+  js count length</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/03/26/Java-Factory-Method-Abstract/"  title="Java Factory Method Abstract">
+ <strong>下一篇：</strong><br/> 
+ <span>Java Factory Method Abstract
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">Java设计模式之单例模式[笔记]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.4.</span> <span class="toc-text">实际项目分析</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

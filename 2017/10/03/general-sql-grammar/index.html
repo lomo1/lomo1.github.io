@@ -1,0 +1,805 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>general sql grammar | Lomo Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Lomo">
+    
+
+    
+    <meta name="description" content="MySQL常见的一些函数使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="general sql grammar">
+<meta property="og:url" content="http://lomo.space/2017/10/03/general-sql-grammar/index.html">
+<meta property="og:site_name" content="Lomo Space">
+<meta property="og:description" content="MySQL常见的一些函数使用">
+<meta property="og:locale">
+<meta property="og:image" content="https://images.gitee.com/uploads/images/2018/1021/143847_975cf667_1120068.png">
+<meta property="article:published_time" content="2017-10-03T06:14:27.000Z">
+<meta property="article:modified_time" content="2022-01-14T11:40:22.876Z">
+<meta property="article:author" content="Lomo">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.gitee.com/uploads/images/2018/1021/143847_975cf667_1120068.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Lomo Space" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Lomo Space">Lomo Space</a></h1>
+				<h2 class="blog-motto">The unexamined life is not worth living.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/categories/essay">Essay</a></li>
+					
+						<li><a href="/categories/read">Read</a></li>
+					
+						<li><a href="/categories/write">Write</a></li>
+					
+						<li><a href="/categories/program">Code</a></li>
+					
+						<li><a href="/categories/study">Study</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:lomo.space">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/03/general-sql-grammar/" title="general sql grammar" itemprop="url">general sql grammar</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Lomo" target="_blank" itemprop="author">Lomo</a>
+		
+  <p class="article-time">
+    <time datetime="2017-10-03T06:14:27.000Z" itemprop="datePublished"> Published 2017-10-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">MySQL内置函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.1.</span> <span class="toc-text">常见查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E8%A1%A8%E6%9F%A5%E8%AF%A2-join"><span class="toc-number">1.1.1.</span> <span class="toc-text">跨表查询(join)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E6%9F%A5%E8%AF%A2-union"><span class="toc-number">1.1.2.</span> <span class="toc-text">合并查询(union)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">常见时间日期操作</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="MySQL内置函数"><a href="#MySQL内置函数" class="headerlink" title="MySQL内置函数"></a>MySQL内置函数</h2><blockquote>
+<p>平时写 SQL 用(到)过的一些 MySQL 内置函数.</p>
+</blockquote>
+<h3 id="常见查询"><a href="#常见查询" class="headerlink" title="常见查询"></a>常见查询</h3><p>e.g.1</p>
+<p><code>version</code> 表:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">| Field       | Type                | Null | Key | Default             | Extra          |</span><br><span class="line">+-------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">| <span class="built_in">id</span>          | bigint(20) unsigned | NO   | PRI | NULL                | auto_increment |</span><br><span class="line">| project_id  | int(11)             | NO   |     | NULL                |                |</span><br><span class="line">| version     | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| build       | int(11)             | NO   |     | NULL                |                |</span><br><span class="line">| stage       | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| created_at  | timestamp           | NO   |     | CURRENT_TIMESTAMP   |                |</span><br><span class="line">| released_at | timestamp           | NO   |     | 0000-00-00 00:00:00 |                |</span><br><span class="line">| commit_hash | varchar(128)        | YES  |     | NULL                |                |</span><br><span class="line">+-------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">8 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p><code>project_id</code> 只有2个值 分别为 1、2 代表 <code>iOS</code> 和 <code>Android</code>.</p>
+<p>Q:  从version表取出: 指定版本号(version)、阶段(stage)的最小build号对应的id</p>
+<p>A: 查出结果集</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> version <span class="keyword">where</span> version<span class="operator">=</span><span class="string">&#x27;5.26.0&#x27;</span> <span class="keyword">and</span> stage<span class="operator">=</span><span class="string">&#x27;grey&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> build limit <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+------------+---------+-------+-------+---------------------+---------------------+------------------------------------------+</span><br><span class="line">| <span class="built_in">id</span> | project_id | version | build | stage | created_at          | released_at         | commit_hash                              |</span><br><span class="line">+----+------------+---------+-------+-------+---------------------+---------------------+------------------------------------------+</span><br><span class="line">| 37 |          2 | 5.26.0  |   898 | grey  | 2018-09-14 15:31:19 | 0000-00-00 00:00:00 | 369f6761d4a2162a96151799fd879509d34dfdeb |</span><br><span class="line">+----+------------+---------+-------+-------+---------------------+---------------------+------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>只获取所需的 <code>id</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> v.id <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> version <span class="keyword">where</span> version<span class="operator">=</span><span class="string">&#x27;5.26.0&#x27;</span> <span class="keyword">and</span> stage<span class="operator">=</span><span class="string">&#x27;grey&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> build limit <span class="number">1</span>) <span class="keyword">as</span> v;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----+</span><br><span class="line">| <span class="built_in">id</span> |</span><br><span class="line">+----+</span><br><span class="line">| 37 |</span><br><span class="line">+----+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.06 sec)</span><br></pre></td></tr></table></figure>
+
+<p>使用了 <code>select</code> 子查询. 注意子查询语句后的 <code>as</code> 语法.</p>
+<h4 id="跨表查询-join"><a href="#跨表查询-join" class="headerlink" title="跨表查询(join)"></a>跨表查询(join)</h4><blockquote>
+<p>join 默认为 left join</p>
+</blockquote>
+<p>e.g.2</p>
+<p>现同一DB下有另一张 <code>table</code> 名为 <code>mr</code>, 结构如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc mr;</span><br><span class="line">+------------------+---------------------+------+-----+---------------------+-----------------------------+</span><br><span class="line">| Field            | Type                | Null | Key | Default             | Extra                       |</span><br><span class="line">+------------------+---------------------+------+-----+---------------------+-----------------------------+</span><br><span class="line">| <span class="built_in">id</span>               | bigint(20) unsigned | NO   | PRI | NULL                | auto_increment              |</span><br><span class="line">| project_id       | int(11)             | NO   | MUL | NULL                |                             |</span><br><span class="line">| mr_id            | int(11) unsigned    | NO   |     | NULL                |                             |</span><br><span class="line">| version_id       | int(11)             | YES  |     | NULL                |                             |</span><br><span class="line">| product_id       | int(11)             | YES  |     | NULL                |                             |</span><br><span class="line">| testcase         | varchar(512)        | YES  |     | NULL                |                             |</span><br><span class="line">| description      | text                | YES  |     | NULL                |                             |</span><br><span class="line">| reject           | tinyint(11)         | NO   |     | 0                   |                             |</span><br><span class="line">| failed           | tinyint(11)         | NO   |     | 0                   |                             |</span><br><span class="line">| author           | varchar(64)         | NO   |     | NULL                |                             |</span><br><span class="line">| title            | varchar(128)        | NO   |     | NULL                |                             |</span><br><span class="line">| jira_key         | varchar(64)         | NO   |     |                     |                             |</span><br><span class="line">| status           | varchar(32)         | YES  |     | NULL                |                             |</span><br><span class="line">| changed_file     | int(11) unsigned    | NO   |     | NULL                |                             |</span><br><span class="line">| additions        | int(11) unsigned    | NO   |     | NULL                |                             |</span><br><span class="line">| deletions        | int(11) unsigned    | NO   |     | NULL                |                             |</span><br><span class="line">| created_at       | timestamp           | NO   |     | CURRENT_TIMESTAMP   |                             |</span><br><span class="line">| merged_at        | timestamp           | NO   |     | 0000-00-00 00:00:00 |                             |</span><br><span class="line">| updated_at       | timestamp           | NO   |     | CURRENT_TIMESTAMP   | on update CURRENT_TIMESTAMP |</span><br><span class="line">| total_review     | int(11)             | YES  |     | NULL                |                             |</span><br><span class="line">| resolved_review  | int(11)             | YES  |     | NULL                |                             |</span><br><span class="line">| pa_name          | varchar(32)         | YES  |     | NULL                |                             |</span><br><span class="line">| bug_count        | int(11) unsigned    | NO   |     | 0                   |                             |</span><br><span class="line">| severe_bug_count | int(11) unsigned    | NO   |     | 0                   |                             |</span><br><span class="line">| bug_list         | text                | YES  |     | NULL                |                             |</span><br><span class="line">+------------------+---------------------+------+-----+---------------------+-----------------------------+</span><br><span class="line">25 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.02 sec)</span><br></pre></td></tr></table></figure>
+
+<p><code>mr</code> 表中的 <code>version_id</code> 字段和 <code>version</code>表中的 <code>id</code> 相等.</p>
+<p>Q: 给定一个版本号(如: <code>5.26.0</code>)、且 <code>stage=grey</code>情况下 获取 <code>mr</code> 表中该版本该 <code>stage</code> 对应的数据.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> mr_id, jira_key, title, author,pa_name,changed_file,additions,deletions </span><br><span class="line"><span class="keyword">from</span> mr <span class="keyword">where</span> version_id <span class="keyword">in</span> </span><br><span class="line">(<span class="keyword">select</span> v.id <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> version <span class="keyword">where</span> version<span class="operator">=</span><span class="string">&#x27;5.26.0&#x27;</span> <span class="keyword">and</span> stage<span class="operator">=</span><span class="string">&#x27;grey&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> build limit <span class="number">1</span>) <span class="keyword">as</span> v);</span><br></pre></td></tr></table></figure>
+
+<p>子查询中使用了 <code>limit 1</code> 表示 只取 <code>version</code> 表中的最小的 <code>id</code>.</p>
+<p><img src="https://images.gitee.com/uploads/images/2018/1021/143847_975cf667_1120068.png" alt="指定查询" title="屏幕截图.png"></p>
+<p>e.g.3</p>
+<p>Q: 查询 <code>iOS</code> 所有版本的 <code>mr</code> 关键信息</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> version.version <span class="keyword">as</span> <span class="string">&#x27;版本号&#x27;</span>,<span class="built_in">sum</span>(mr.changed_file) <span class="keyword">as</span> <span class="string">&#x27;修改文件数&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(mr.additions) <span class="keyword">as</span> <span class="string">&#x27;新增代码行数&#x27;</span>, <span class="built_in">sum</span>(mr.deletions) <span class="keyword">as</span> <span class="string">&#x27;删除代码行数&#x27;</span>, </span><br><span class="line">pa_name <span class="keyword">from</span> version <span class="keyword">left</span> <span class="keyword">join</span> mr <span class="keyword">on</span> version.id<span class="operator">=</span>mr.version_id <span class="keyword">where</span> mr.project_id<span class="operator">=</span><span class="number">1</span> <span class="keyword">group</span> <span class="keyword">by</span> version;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+-----------+-----------------+--------------------+--------------------+-----------------+</span><br><span class="line">| 版本号    | 修改文件数      | 新增代码行数       | 删除代码行数       | pa_name         |</span><br><span class="line">+-----------+-----------------+--------------------+--------------------+-----------------+</span><br><span class="line">| 4.24.0    |              44 |                242 |                 50 | smart-community |</span><br><span class="line">| 4.24.1    |               1 |                 29 |                  0 | NULL            |</span><br><span class="line">| 4.25.0    |              31 |                177 |                115 | community       |</span><br><span class="line">| 4.25.1    |              43 |                199 |                141 | community       |</span><br><span class="line">| 4.26.0    |             366 |               7897 |               3083 | community       |</span><br><span class="line">| 4.26.1    |             127 |                776 |                339 | community       |</span><br><span class="line">| 4.26.2    |              10 |                 53 |                 10 | community       |</span><br><span class="line">| 4.26.3    |               0 |                  0 |                  0 | community       |</span><br><span class="line">| 4.27.0    |             376 |               5241 |               2321 | mobile-platform |</span><br><span class="line">| 4.27.1    |              63 |                838 |                561 | NULL            |</span><br><span class="line">| 4.28.0    |             424 |               1117 |              15794 | community       |</span><br><span class="line">+-----------+-----------------+--------------------+--------------------+-----------------+</span><br><span class="line">11 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.03 sec)</span><br></pre></td></tr></table></figure>
+
+<p>e.g.4</p>
+<p>Q: 以pa_name 为维度 查询某个Android grey阶段 某个版本 （如: <code>version=&#39;5.26.0&#39; , stage=&#39;grey&#39; , project_id=2</code>） mr 表中的关键信息.</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(mr_id) <span class="keyword">as</span> <span class="string">&#x27;MR 数&#x27;</span>,pa_name <span class="keyword">as</span> <span class="string">&#x27;PA&#x27;</span>,<span class="built_in">sum</span>(changed_file) <span class="keyword">as</span> <span class="string">&#x27;修改文件数&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(additions) <span class="keyword">as</span> <span class="string">&#x27;新增代码行数&#x27;</span>, <span class="built_in">sum</span>(deletions) <span class="keyword">as</span> <span class="string">&#x27;删除代码行数&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> mr <span class="keyword">where</span> version_id <span class="keyword">in</span> (<span class="keyword">select</span> v.id <span class="keyword">from</span> </span><br><span class="line">(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> version <span class="keyword">where</span> version<span class="operator">=</span><span class="string">&#x27;5.26.0&#x27;</span> <span class="keyword">and</span> stage<span class="operator">=</span><span class="string">&#x27;grey&#x27;</span> <span class="keyword">and</span> project_id<span class="operator">=</span><span class="number">2</span> <span class="keyword">order</span> <span class="keyword">by</span> build limit <span class="number">1</span>) <span class="keyword">as</span> v) </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> pa_name;</span><br></pre></td></tr></table></figure>
+
+<p>结果集:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">| MR 数  | PA              | 修改文件数      | 新增代码行数       | 删除代码行数       |</span><br><span class="line">+--------+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">|      3 | commercial      |               3 |                  3 |                  3 |</span><br><span class="line">|      6 | community       |              19 |               3821 |                 18 |</span><br><span class="line">|      1 | mobile-platform |               1 |                  1 |                  1 |</span><br><span class="line">|      1 | smart-community |               1 |                  1 |                  1 |</span><br><span class="line">+--------+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.02 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="合并查询-union"><a href="#合并查询-union" class="headerlink" title="合并查询(union)"></a>合并查询(union)</h4><p>现有另一张表 <code>diff</code>, 其中某些字段类型 和 <code>mr</code> 表的一些字段(pa_name, changed_file, additions, deletions)含义类似. 结构如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc diff;</span><br><span class="line">+------------------+---------------------+------+-----+-------------------+-----------------------------+</span><br><span class="line">| Field            | Type                | Null | Key | Default           | Extra                       |</span><br><span class="line">+------------------+---------------------+------+-----+-------------------+-----------------------------+</span><br><span class="line">| <span class="built_in">id</span>               | bigint(20) unsigned | NO   | PRI | NULL              | auto_increment              |</span><br><span class="line">| project_id       | int(11)             | NO   |     | NULL              |                             |</span><br><span class="line">| module_name      | varchar(64)         | NO   |     | NULL              |                             |</span><br><span class="line">| version_from     | varchar(128)        | YES  |     |                   |                             |</span><br><span class="line">| version_to       | varchar(128)        | YES  |     |                   |                             |</span><br><span class="line">| version_id       | int(11)             | NO   |     | NULL              |                             |</span><br><span class="line">| product_id       | int(11)             | YES  |     | NULL              |                             |</span><br><span class="line">| testcase         | varchar(512)        | YES  |     | NULL              |                             |</span><br><span class="line">| description      | text                | YES  |     | NULL              |                             |</span><br><span class="line">| reject           | tinyint(11)         | NO   |     | 0                 |                             |</span><br><span class="line">| failed           | tinyint(11)         | NO   |     | 0                 |                             |</span><br><span class="line">| author           | varchar(64)         | NO   |     | NULL              |                             |</span><br><span class="line">| jira_key         | varchar(64)         | NO   |     |                   |                             |</span><br><span class="line">| changed_file     | int(11) unsigned    | YES  |     | 0                 |                             |</span><br><span class="line">| additions        | int(11) unsigned    | YES  |     | 0                 |                             |</span><br><span class="line">| deletions        | int(11) unsigned    | YES  |     | 0                 |                             |</span><br><span class="line">| created_at       | timestamp           | NO   |     | CURRENT_TIMESTAMP |                             |</span><br><span class="line">| updated_at       | timestamp           | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |</span><br><span class="line">| pa_name          | varchar(32)         | YES  |     | NULL              |                             |</span><br><span class="line">| severe_bug_count | int(11) unsigned    | NO   |     | 0                 |                             |</span><br><span class="line">| bug_count        | int(11) unsigned    | NO   |     | 0                 |                             |</span><br><span class="line">| bug_list         | text                | YES  |     | NULL              |                             |</span><br><span class="line">+------------------+---------------------+------+-----+-------------------+-----------------------------+</span><br><span class="line">22 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.02 sec)</span><br></pre></td></tr></table></figure>
+
+<p>Q: 现需要获取, Android 某个版本(如: 5.26.0) 灰度(stage&#x3D;grey) 所有 <code>mr</code> 与 <code>diff</code> 表中的 <code>changed_file, additions, deletions</code> 总和 结果以 <code>pa_name</code> 升序排列.</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.pa_name <span class="keyword">as</span> <span class="string">&#x27;PA&#x27;</span>, <span class="built_in">sum</span>(t.changed_file) <span class="keyword">as</span> <span class="string">&#x27;修改文件数&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(t.additions) <span class="keyword">as</span> <span class="string">&#x27;新增代码行数&#x27;</span>, <span class="built_in">sum</span>(t.deletions) <span class="keyword">as</span> <span class="string">&#x27;删除代码行数&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> version_id,pa_name,changed_file, additions, deletions </span><br><span class="line"><span class="keyword">from</span> mr <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span>  version_id,pa_name, changed_file, additions, deletions <span class="keyword">from</span> diff) t</span><br><span class="line"><span class="keyword">where</span> t.version_id <span class="keyword">in</span> </span><br><span class="line">(<span class="keyword">select</span> v.id <span class="keyword">from</span> </span><br><span class="line">(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> version <span class="keyword">where</span> version<span class="operator">=</span><span class="string">&#x27;5.26.0&#x27;</span> <span class="keyword">and</span> stage<span class="operator">=</span><span class="string">&#x27;grey&#x27;</span> <span class="keyword">and</span> project_id<span class="operator">=</span><span class="number">2</span> <span class="keyword">order</span> <span class="keyword">by</span> build limit <span class="number">1</span>) <span class="keyword">as</span> v) </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> t.pa_name;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">| PA              | 修改文件数      | 新增代码行数       | 删除代码行数       |</span><br><span class="line">+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">| commercial      |               4 |                  4 |                  4 |</span><br><span class="line">| community       |              19 |               3821 |                 18 |</span><br><span class="line">| mobile-platform |               1 |                  1 |                  1 |</span><br><span class="line">| smart-community |              59 |               2061 |                220 |</span><br><span class="line">+-----------------+-----------------+--------------------+--------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.02 sec)</span><br></pre></td></tr></table></figure>
+
+<p>涉及到 <code>union all</code> 组合查询.</p>
+<p><code>union</code> 会把重复的记录从结果集中去除掉;<br><code>unoin</code> 会把所有的记录返回, 所以效率比上一个高.</p>
+<h3 id="常见时间日期操作"><a href="#常见时间日期操作" class="headerlink" title="常见时间日期操作"></a>常见时间日期操作</h3><p>现有 <code>downtime</code> 表, 结构如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc downtime;</span><br><span class="line">+----------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">| Field          | Type                | Null | Key | Default             | Extra          |</span><br><span class="line">+----------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">| <span class="built_in">id</span>             | bigint(20) unsigned | NO   | PRI | NULL                | auto_increment |</span><br><span class="line">| downtime_id    | varchar(128)        | NO   |     | NULL                |                |</span><br><span class="line">| title          | varchar(128)        | NO   |     | NULL                |                |</span><br><span class="line">| author         | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| status         | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| level          | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| introduce_type | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| end_type       | varchar(32)         | NO   |     | NULL                |                |</span><br><span class="line">| teams          | text                | YES  |     | NULL                |                |</span><br><span class="line">| start_time     | timestamp           | NO   |     | CURRENT_TIMESTAMP   |                |</span><br><span class="line">| end_time       | timestamp           | NO   |     | 0000-00-00 00:00:00 |                |</span><br><span class="line">| created_at     | timestamp           | NO   |     | 0000-00-00 00:00:00 |                |</span><br><span class="line">| updated_at     | timestamp           | NO   |     | 0000-00-00 00:00:00 |                |</span><br><span class="line">+----------------+---------------------+------+-----+---------------------+----------------+</span><br><span class="line">13 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.02 sec)</span><br></pre></td></tr></table></figure>
+
+<p>e.g.1</p>
+<p>Q: 以 <code>level</code> 为维度统计本年度(2018) <code>downtime</code> 表中的故障信息</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> <span class="string">&#x27;数量&#x27;</span>, level <span class="keyword">as</span> <span class="string">&#x27;等级&#x27;</span>, <span class="keyword">year</span>(created_at) <span class="keyword">as</span> <span class="string">&#x27;创建时间&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(created_at)<span class="operator">=</span><span class="number">2018</span> <span class="keyword">group</span> <span class="keyword">by</span> level, <span class="keyword">year</span>(created_at) <span class="keyword">order</span> <span class="keyword">by</span> level, <span class="keyword">year</span>(created_at) <span class="keyword">asc</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+--------+--------+--------------+</span><br><span class="line">| 数量   | 等级   | 创建时间     |</span><br><span class="line">+--------+--------+--------------+</span><br><span class="line">|     36 | P0     |         2018 |</span><br><span class="line">|     66 | P1     |         2018 |</span><br><span class="line">|     97 | P2     |         2018 |</span><br><span class="line">|     67 | P3     |         2018 |</span><br><span class="line">|     42 | P4     |         2018 |</span><br><span class="line">|      5 | P5     |         2018 |</span><br><span class="line">+--------+--------+--------------+</span><br><span class="line">6 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.29 sec)</span><br></pre></td></tr></table></figure>
+
+<p>使用了 内置的  <code>year</code> 函数. <code>year</code> 函数根据 表中存储的时间戳(如: ‘2018-08-28 14:58:00’), <code>year(2018-08-28 14:58:00)</code> 返回 <code>2018</code>.</p>
+<p>e.g.2</p>
+<p>Q: 求本年度downtime平均时长</p>
+<p>使用 <code>TIMESTAMPDIFF</code> 来计算两个时间段之间的差值.</p>
+<p>这个mysql中的函数 可以用来计算2个时间段差值。第一个参数是精确单位： YEAR&#x2F; MONTH&#x2F;QUARTER&#x2F;WEEK&#x2F;DAY&#x2F;HOUR&#x2F;MINUTE&#x2F;SECOND&#x2F;FRAC_SECOND</p>
+<blockquote>
+<p>FRAC_SECOND: 毫秒</p>
+</blockquote>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">avg</span>(TIMESTAMPDIFF(<span class="keyword">HOUR</span>, start_time, end_time)) <span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(created_at)<span class="operator">=</span><span class="number">2018</span>;</span><br></pre></td></tr></table></figure>
+
+<p>e.g.3</p>
+<p>Q: 以周为维度统计本年度 downtime 信息(P2 +)</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(<span class="string">&#x27;第&#x27;</span>, week(created_at,<span class="number">1</span>), <span class="string">&#x27;周&#x27;</span>) <span class="keyword">as</span> <span class="string">&#x27;Week&#x27;</span>, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> <span class="string">&#x27;新增 Downtime 数量&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(if(level <span class="keyword">in</span> (<span class="string">&#x27;P0&#x27;</span>, <span class="string">&#x27;P1&#x27;</span>, <span class="string">&#x27;P2&#x27;</span>), <span class="number">1</span>, <span class="number">0</span>)) <span class="keyword">as</span> <span class="string">&#x27;新增 P2 以上 Downtime 数量&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(created_at)<span class="operator">=</span><span class="number">2018</span> <span class="keyword">group</span> <span class="keyword">by</span> week(created_at,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用 week函数，第二个参数 1 代表 从每周从 Monday开始计算(mysql默认无参数表示从 sunday周日 算起 为一周开始).</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">+----------+------------------------+----------------------------------+</span><br><span class="line">| Week     | 新增 Downtime 数量     | 新增 P2 以上 Downtime 数量       |</span><br><span class="line">+----------+------------------------+----------------------------------+</span><br><span class="line">| 第2周    |                      5 |                                2 |</span><br><span class="line">| 第3周    |                     10 |                                5 |</span><br><span class="line">| 第4周    |                      6 |                                6 |</span><br><span class="line">| 第5周    |                      7 |                                2 |</span><br><span class="line">| 第6周    |                      3 |                                1 |</span><br><span class="line">| 第9周    |                      4 |                                2 |</span><br><span class="line">| 第10周   |                      8 |                                6 |</span><br><span class="line">| 第11周   |                      3 |                                1 |</span><br><span class="line">| 第12周   |                      8 |                                2 |</span><br><span class="line">| 第13周   |                      5 |                                3 |</span><br><span class="line">| 第14周   |                     10 |                                4 |</span><br><span class="line">| 第15周   |                     10 |                                7 |</span><br><span class="line">| 第16周   |                      7 |                                5 |</span><br><span class="line">| 第17周   |                      9 |                                7 |</span><br><span class="line">| 第18周   |                      3 |                                3 |</span><br><span class="line">| 第19周   |                      9 |                                7 |</span><br><span class="line">| 第20周   |                     10 |                                6 |</span><br><span class="line">| 第21周   |                     11 |                                8 |</span><br><span class="line">| 第22周   |                      9 |                                8 |</span><br><span class="line">| 第23周   |                     10 |                                6 |</span><br><span class="line">| 第24周   |                      8 |                                6 |</span><br><span class="line">| 第25周   |                      9 |                                6 |</span><br><span class="line">| 第26周   |                     10 |                                7 |</span><br><span class="line">| 第27周   |                     13 |                               10 |</span><br><span class="line">| 第28周   |                     10 |                                9 |</span><br><span class="line">| 第29周   |                      5 |                                5 |</span><br><span class="line">| 第30周   |                      8 |                                5 |</span><br><span class="line">| 第31周   |                     15 |                                8 |</span><br><span class="line">| 第32周   |                      8 |                                4 |</span><br><span class="line">| 第33周   |                      7 |                                2 |</span><br><span class="line">| 第34周   |                      5 |                                2 |</span><br><span class="line">| 第35周   |                     13 |                                9 |</span><br><span class="line">| 第36周   |                      4 |                                2 |</span><br><span class="line">| 第37周   |                      8 |                                6 |</span><br><span class="line">| 第38周   |                     14 |                                7 |</span><br><span class="line">| 第39周   |                     13 |                                9 |</span><br><span class="line">| 第41周   |                      6 |                                5 |</span><br><span class="line">| 第42周   |                     10 |                                6 |</span><br><span class="line">+----------+------------------------+----------------------------------+</span><br><span class="line">38 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.03 sec)</span><br></pre></td></tr></table></figure>
+
+<p>e.g.4</p>
+<p>Q: 以月为维度统计本年度 downtime 信息(P2 +)</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(<span class="string">&#x27;第&#x27;</span>, <span class="keyword">month</span>(created_at), <span class="string">&#x27;月&#x27;</span>) <span class="keyword">as</span> <span class="string">&#x27;Month&#x27;</span>, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> <span class="string">&#x27;新增 Downtime 数量&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(if(level <span class="keyword">in</span> (<span class="string">&#x27;P0&#x27;</span>, <span class="string">&#x27;P1&#x27;</span>, <span class="string">&#x27;P2&#x27;</span>), <span class="number">1</span>, <span class="number">0</span>)) <span class="keyword">as</span> <span class="string">&#x27;新增 P2 以上 Downtime 数量&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(created_at)<span class="operator">=</span><span class="number">2018</span> <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">month</span>(created_at);</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>month</code> 函数， 该函数默认返回的是当前时间对应的月份(数字 1~12)</p>
+<p><code>monthname函数</code> 函数可以获得对应的英文格式的月份.</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> monthname(created_at) <span class="keyword">as</span> <span class="string">&#x27;Month&#x27;</span>, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> <span class="string">&#x27;新增 Downtime 数量&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(if(level <span class="keyword">in</span> (<span class="string">&#x27;P0&#x27;</span>, <span class="string">&#x27;P1&#x27;</span>, <span class="string">&#x27;P2&#x27;</span>), <span class="number">1</span>, <span class="number">0</span>)) <span class="keyword">as</span> <span class="string">&#x27;新增 P2 以上 Downtime 数量&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(created_at)<span class="operator">=</span><span class="number">2018</span> <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">month</span>(created_at)</span><br></pre></td></tr></table></figure>
+
+<p>结果集:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">+-----------+------------------------+----------------------------------+</span><br><span class="line">| Month     | 新增 Downtime 数量     | 新增 P2 以上 Downtime 数量       |</span><br><span class="line">+-----------+------------------------+----------------------------------+</span><br><span class="line">| January   |                     26 |                               14 |</span><br><span class="line">| February  |                      7 |                                3 |</span><br><span class="line">| March     |                     26 |                               13 |</span><br><span class="line">| April     |                     36 |                               23 |</span><br><span class="line">| May       |                     40 |                               31 |</span><br><span class="line">| June      |                     39 |                               26 |</span><br><span class="line">| July      |                     44 |                               33 |</span><br><span class="line">| August    |                     39 |                               20 |</span><br><span class="line">| September |                     40 |                               25 |</span><br><span class="line">| October   |                     16 |                               11 |</span><br><span class="line">+-----------+------------------------+----------------------------------+</span><br><span class="line">10 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.28 sec)</span><br></pre></td></tr></table></figure>
+
+<p>e.g.5</p>
+<p>Q: 以季度为维度统计本年度 downtime 信息(P2 +)</p>
+<p>A:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(<span class="string">&#x27;Q-&#x27;</span>, quarter(start_time)) <span class="keyword">as</span> <span class="string">&#x27;季度&#x27;</span>, <span class="built_in">count</span>(start_time) <span class="keyword">as</span> <span class="string">&#x27;新增 Downtime 数量&#x27;</span>, </span><br><span class="line"><span class="built_in">sum</span>(if(level <span class="keyword">in</span> (<span class="string">&#x27;P0&#x27;</span>, <span class="string">&#x27;P1&#x27;</span>, <span class="string">&#x27;P2&#x27;</span>), <span class="number">1</span>, <span class="number">0</span>)) <span class="keyword">as</span> <span class="string">&#x27;新增 P2 以上 Downtime 数量&#x27;</span> </span><br><span class="line"><span class="keyword">from</span> downtime <span class="keyword">where</span> <span class="keyword">year</span>(start_time)<span class="operator">=</span><span class="number">2018</span> <span class="keyword">group</span> <span class="keyword">by</span> quarter(start_time);</span><br></pre></td></tr></table></figure>
+
+<p>结果集:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------+------------------------+----------------------------------+</span><br><span class="line">| 季度   | 新增 Downtime 数量     | 新增 P2 以上 Downtime 数量       |</span><br><span class="line">+--------+------------------------+----------------------------------+</span><br><span class="line">| Q-1    |                     68 |                               36 |</span><br><span class="line">| Q-2    |                    115 |                               83 |</span><br><span class="line">| Q-3    |                    113 |                               69 |</span><br><span class="line">| Q-4    |                     10 |                                8 |</span><br><span class="line">+--------+------------------------+----------------------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.03 sec)</span><br></pre></td></tr></table></figure>
+
+<p>季度统计，主要使用 <code>quarter</code> 函数.</p>
+<p>MySQL时间日期函数参考: <a target="_blank" rel="noopener" href="http://wiki.jikexueyuan.com/project/mysql/useful-functions/time-functions.html">http://wiki.jikexueyuan.com/project/mysql/useful-functions/time-functions.html</a></p>
+  
+	</div>
+
+		
+	  <div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏下Lomo呗"></a>
+        <span class="donate_txt">
+           ↑<br>
+		   有收获, 还不错? 求鼓励,求支持!
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- 支付宝打赏图案 -->
+		<img src="/img/zhifubao.jpg" alt="支付宝打赏" title="支付宝扫一扫打赏Lomo"> 
+		<!-- 微信打赏图案 -->
+		<img src="/img/weixin.jpg" alt="微信打赏" title="微信扫一扫打赏Lomo">  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+        <!-- 鼠标离开打赏区域后自动隐藏二维码 -->
+        var x = document.getElementById("donate_guide");
+        x.addEventListener("mouseleave", function(){
+            $('#donate_board').removeClass('hidden');
+			$('#donate_guide').addClass('hidden');
+        });
+	</script>
+</div>
+    
+		<br>
+		<div align="center">
+			
+			<pre>
+    <code>
+    <b>    
+        版权声明</b>:
+        本文由<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>创作和发表,采用<b>署名(BY)</b>-<b>非商业性使用(NC)</b>-<b>相同方式共享(SA)</b>国际许可协议进行许可,
+        转载请注明作者及出处,本文作者为<b><a href="/about" target="_blank" title="Lomo">Lomo</a></b>,本文标题为<b><a href="/2017/10/03/general-sql-grammar/" target="_blank" title="general sql grammar">general sql grammar</a>.</b>
+    </b>
+    </code>
+</pre>
+			
+		</div>
+
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/study/">study</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/mysql/">mysql</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lomo.space/2017/10/03/general-sql-grammar/" data-title="general sql grammar | Lomo Space" data-tsina="527123733" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/24/observable/" title="observable">
+  <strong>上一篇：</strong><br/>
+  <span>
+  observable</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/09/26/angular-notes/"  title="angular notes">
+ <strong>下一篇：</strong><br/> 
+ <span>angular notes
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+<br>
+
+    <hr style=" height:2px;border:none;border-top:2px dotted gray;"/>
+    <h3>&nbsp;Leave a message ^_^:</h3>
+    <div id="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <script>
+      new Valine({
+          el: '#valine' ,
+          notify:false,
+          verify:false,
+          app_id: 'YK5Kb1s0spupA5TmmsfGjTDv-gzGzoHsz',
+          app_key: 'BEav0My9p76B9y55MnYP7WhJ',
+          placeholder: 'Just go go',
+          path: window.location.pathname,
+          avatar:'monsterid' 
+      });
+      // console.log("APPID: " + theme.valine.appid);
+    </script>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">MySQL内置函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.1.</span> <span class="toc-text">常见查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E8%A1%A8%E6%9F%A5%E8%AF%A2-join"><span class="toc-number">1.1.1.</span> <span class="toc-text">跨表查询(join)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E6%9F%A5%E8%AF%A2-union"><span class="toc-number">1.1.2.</span> <span class="toc-text">合并查询(union)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">常见时间日期操作</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="lomo1" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/essay/" title="essay">essay<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/program/" title="program">program<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/read/" title="read">read<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/study/" title="study">study<sup>52</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/write/" title="write">write<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/k8s/" title="k8s">k8s<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DesignPatterns/" title="DesignPatterns">DesignPatterns<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularjs/" title="angularjs">angularjs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CentOS/" title="CentOS">CentOS<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/reflect/" title="reflect">reflect<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/read/" title="read">read<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/study/" title="study">study<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bing/" title="Bing">Bing<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gogs/" title="gogs">gogs<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/docker/" title="docker">docker<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://tmallfe.github.io/" target="_blank" title="天猫前端">天猫前端</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.kanxue.com/" target="_blank" title="看雪">看雪</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://google.github.io/styleguide/" target="_blank" title="CodeStyle">CodeStyle</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lincode.github.io/" target="_blank" title="lincode">lincode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://ourjs.com/" target="_blank" title="OurJS">OurJS</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RYF">RYF</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://docs.oracle.com/javase/7/docs/" target="_blank" title="JavaDoc[7]">JavaDoc[7]</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://lomo.space/404.html" target="_blank" title="公益">公益</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.w3cplus.com/" target="_blank" title="大漠W3C">大漠W3C</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://www.guru99.com/" target="_blank" title="Guru99">Guru99</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://devdocs.io/" target="_blank" title="DevDocs">DevDocs</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> To be a better one To <br/>
+			Spend More Time To These Worth Things</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lomo1" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/chnhawk" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/lomospace" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:lomo@lomo.space" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="#" title="">Hexo/GitHub</a> And CopyRight By Lomo © 2022 
+		
+		<a href="/about" target="_blank" title="Lomo">Lomo</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  // '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
